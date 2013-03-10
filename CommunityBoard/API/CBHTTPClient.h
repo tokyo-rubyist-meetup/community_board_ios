@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Matthew Gillingham. All rights reserved.
 //
 
-#import "AFRESTClient.h"
+#import "AFOAuth2Client.h"
 
-@interface CBHTTPClient : AFRESTClient
+@interface CBHTTPClient : AFOAuth2Client
 
 + (CBHTTPClient *)sharedClient;
 

@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4B5AA41D8D4E47A197DDEC6F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C5EA5474D5041C79E517171 /* libPods.a */; };
+		F420CA7116E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = F420CA7016E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m */; };
+		F420CA7316E324CA008878A6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F420CA7216E324CA008878A6 /* QuartzCore.framework */; };
+		F420CA7616E33059008878A6 /* Community.m in Sources */ = {isa = PBXBuildFile; fileRef = F420CA7516E33059008878A6 /* Community.m */; };
+		F420CA7916E33059008878A6 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = F420CA7816E33059008878A6 /* Post.m */; };
+		F420CA7C16E33059008878A6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = F420CA7B16E33059008878A6 /* User.m */; };
 		F48417C716D9CE8B00074EAE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417C616D9CE8B00074EAE /* UIKit.framework */; };
 		F48417C916D9CE8B00074EAE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417C816D9CE8B00074EAE /* Foundation.framework */; };
 		F48417CB16D9CE8B00074EAE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417CA16D9CE8B00074EAE /* CoreGraphics.framework */; };
@@ -19,19 +24,28 @@
 		F48417DD16D9CE8B00074EAE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F48417DC16D9CE8B00074EAE /* Default@2x.png */; };
 		F48417DF16D9CE8B00074EAE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F48417DE16D9CE8B00074EAE /* Default-568h@2x.png */; };
 		F48417E216D9CE8B00074EAE /* CommunityBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F48417E016D9CE8B00074EAE /* CommunityBoard.xcdatamodeld */; };
-		F48417E516D9CE8B00074EAE /* CBMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48417E416D9CE8B00074EAE /* CBMasterViewController.m */; };
-		F48417E816D9CE8B00074EAE /* CBDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48417E716D9CE8B00074EAE /* CBDetailViewController.m */; };
-		F48417EB16D9CE8B00074EAE /* CBMasterViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F48417E916D9CE8B00074EAE /* CBMasterViewController_iPhone.xib */; };
-		F48417EE16D9CE8B00074EAE /* CBMasterViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F48417EC16D9CE8B00074EAE /* CBMasterViewController_iPad.xib */; };
-		F48417F416D9CE8B00074EAE /* CBDetailViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F48417F216D9CE8B00074EAE /* CBDetailViewController_iPad.xib */; };
+		F48417E516D9CE8B00074EAE /* CBCommunityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48417E416D9CE8B00074EAE /* CBCommunityViewController.m */; };
+		F48417E816D9CE8B00074EAE /* CBPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48417E716D9CE8B00074EAE /* CBPostViewController.m */; };
 		F484181D16D9D89E00074EAE /* CBHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F484181C16D9D89E00074EAE /* CBHTTPClient.m */; };
 		F484182416D9ED4D00074EAE /* CBIncrementalStore.m in Sources */ = {isa = PBXBuildFile; fileRef = F484182316D9ED4D00074EAE /* CBIncrementalStore.m */; };
-		F484182616DA03F100074EAE /* CBDetailViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F484182516DA03F100074EAE /* CBDetailViewController_iPhone.xib */; };
+		F48C53B416E20D2D00A5A7D9 /* CBCreatePostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48C53B316E20D2D00A5A7D9 /* CBCreatePostViewController.m */; };
+		F4E0178616EC55E30001EFB0 /* CBLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E0178516EC55E30001EFB0 /* CBLoginViewController.m */; };
+		F4E0178816EC6FA20001EFB0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4E0178716EC6FA20001EFB0 /* MobileCoreServices.framework */; };
+		F4E0178A16EC6FAD0001EFB0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4E0178916EC6FAD0001EFB0 /* Security.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9C5EA5474D5041C79E517171 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE86F31D8B7447589944036B /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		F420CA6F16E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+CommunityBoardExtensions.h"; sourceTree = "<group>"; };
+		F420CA7016E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+CommunityBoardExtensions.m"; sourceTree = "<group>"; };
+		F420CA7216E324CA008878A6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F420CA7416E33059008878A6 /* Community.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Community.h; sourceTree = "<group>"; };
+		F420CA7516E33059008878A6 /* Community.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Community.m; sourceTree = "<group>"; };
+		F420CA7716E33059008878A6 /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
+		F420CA7816E33059008878A6 /* Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Post.m; sourceTree = "<group>"; };
+		F420CA7A16E33059008878A6 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		F420CA7B16E33059008878A6 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		F48417C316D9CE8B00074EAE /* CommunityBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommunityBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48417C616D9CE8B00074EAE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F48417C816D9CE8B00074EAE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -47,18 +61,20 @@
 		F48417DC16D9CE8B00074EAE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		F48417DE16D9CE8B00074EAE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F48417E116D9CE8B00074EAE /* CommunityBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CommunityBoard.xcdatamodel; sourceTree = "<group>"; };
-		F48417E316D9CE8B00074EAE /* CBMasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBMasterViewController.h; sourceTree = "<group>"; };
-		F48417E416D9CE8B00074EAE /* CBMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CBMasterViewController.m; sourceTree = "<group>"; };
-		F48417E616D9CE8B00074EAE /* CBDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBDetailViewController.h; sourceTree = "<group>"; };
-		F48417E716D9CE8B00074EAE /* CBDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CBDetailViewController.m; sourceTree = "<group>"; };
-		F48417EA16D9CE8B00074EAE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CBMasterViewController_iPhone.xib; sourceTree = "<group>"; };
-		F48417ED16D9CE8B00074EAE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CBMasterViewController_iPad.xib; sourceTree = "<group>"; };
-		F48417F316D9CE8B00074EAE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CBDetailViewController_iPad.xib; sourceTree = "<group>"; };
+		F48417E316D9CE8B00074EAE /* CBCommunityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBCommunityViewController.h; sourceTree = "<group>"; };
+		F48417E416D9CE8B00074EAE /* CBCommunityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CBCommunityViewController.m; sourceTree = "<group>"; };
+		F48417E616D9CE8B00074EAE /* CBPostViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBPostViewController.h; sourceTree = "<group>"; };
+		F48417E716D9CE8B00074EAE /* CBPostViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CBPostViewController.m; sourceTree = "<group>"; };
 		F484181B16D9D89E00074EAE /* CBHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBHTTPClient.h; sourceTree = "<group>"; };
 		F484181C16D9D89E00074EAE /* CBHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBHTTPClient.m; sourceTree = "<group>"; };
 		F484182216D9ED4D00074EAE /* CBIncrementalStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBIncrementalStore.h; sourceTree = "<group>"; };
 		F484182316D9ED4D00074EAE /* CBIncrementalStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBIncrementalStore.m; sourceTree = "<group>"; };
-		F484182516DA03F100074EAE /* CBDetailViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CBDetailViewController_iPhone.xib; sourceTree = "<group>"; };
+		F48C53B216E20D2D00A5A7D9 /* CBCreatePostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCreatePostViewController.h; sourceTree = "<group>"; };
+		F48C53B316E20D2D00A5A7D9 /* CBCreatePostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCreatePostViewController.m; sourceTree = "<group>"; };
+		F4E0178416EC55E30001EFB0 /* CBLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBLoginViewController.h; sourceTree = "<group>"; };
+		F4E0178516EC55E30001EFB0 /* CBLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBLoginViewController.m; sourceTree = "<group>"; };
+		F4E0178716EC6FA20001EFB0 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		F4E0178916EC6FAD0001EFB0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +82,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4E0178A16EC6FAD0001EFB0 /* Security.framework in Frameworks */,
+				F4E0178816EC6FA20001EFB0 /* MobileCoreServices.framework in Frameworks */,
+				F420CA7316E324CA008878A6 /* QuartzCore.framework in Frameworks */,
 				F48417C716D9CE8B00074EAE /* UIKit.framework in Frameworks */,
 				F48417C916D9CE8B00074EAE /* Foundation.framework in Frameworks */,
 				F48417CB16D9CE8B00074EAE /* CoreGraphics.framework in Frameworks */,
@@ -77,6 +96,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F420CA6E16E31ABE008878A6 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				F420CA6F16E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.h */,
+				F420CA7016E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
 		F48417BA16D9CE8B00074EAE = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +126,9 @@
 		F48417C516D9CE8B00074EAE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F4E0178916EC6FAD0001EFB0 /* Security.framework */,
+				F4E0178716EC6FA20001EFB0 /* MobileCoreServices.framework */,
+				F420CA7216E324CA008878A6 /* QuartzCore.framework */,
 				F48417C616D9CE8B00074EAE /* UIKit.framework */,
 				F48417C816D9CE8B00074EAE /* Foundation.framework */,
 				F48417CA16D9CE8B00074EAE /* CoreGraphics.framework */,
@@ -111,18 +142,19 @@
 			isa = PBXGroup;
 			children = (
 				F484181A16D9D87700074EAE /* API */,
+				F420CA6E16E31ABE008878A6 /* Category */,
 				F484182116D9ED4D00074EAE /* IncrementalStore */,
 				F484181016D9D71300074EAE /* Model */,
 				F48417D716D9CE8B00074EAE /* CBAppDelegate.h */,
 				F48417D816D9CE8B00074EAE /* CBAppDelegate.m */,
-				F48417E316D9CE8B00074EAE /* CBMasterViewController.h */,
-				F48417E416D9CE8B00074EAE /* CBMasterViewController.m */,
-				F48417E616D9CE8B00074EAE /* CBDetailViewController.h */,
-				F48417E716D9CE8B00074EAE /* CBDetailViewController.m */,
-				F48417E916D9CE8B00074EAE /* CBMasterViewController_iPhone.xib */,
-				F48417EC16D9CE8B00074EAE /* CBMasterViewController_iPad.xib */,
-				F484182516DA03F100074EAE /* CBDetailViewController_iPhone.xib */,
-				F48417F216D9CE8B00074EAE /* CBDetailViewController_iPad.xib */,
+				F48417E316D9CE8B00074EAE /* CBCommunityViewController.h */,
+				F48417E416D9CE8B00074EAE /* CBCommunityViewController.m */,
+				F48417E616D9CE8B00074EAE /* CBPostViewController.h */,
+				F48417E716D9CE8B00074EAE /* CBPostViewController.m */,
+				F48C53B216E20D2D00A5A7D9 /* CBCreatePostViewController.h */,
+				F48C53B316E20D2D00A5A7D9 /* CBCreatePostViewController.m */,
+				F4E0178416EC55E30001EFB0 /* CBLoginViewController.h */,
+				F4E0178516EC55E30001EFB0 /* CBLoginViewController.m */,
 				F48417E016D9CE8B00074EAE /* CommunityBoard.xcdatamodeld */,
 				F48417CF16D9CE8B00074EAE /* Supporting Files */,
 			);
@@ -146,6 +178,12 @@
 		F484181016D9D71300074EAE /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F420CA7A16E33059008878A6 /* User.h */,
+				F420CA7B16E33059008878A6 /* User.m */,
+				F420CA7716E33059008878A6 /* Post.h */,
+				F420CA7816E33059008878A6 /* Post.m */,
+				F420CA7416E33059008878A6 /* Community.h */,
+				F420CA7516E33059008878A6 /* Community.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -225,10 +263,6 @@
 				F48417DB16D9CE8B00074EAE /* Default.png in Resources */,
 				F48417DD16D9CE8B00074EAE /* Default@2x.png in Resources */,
 				F48417DF16D9CE8B00074EAE /* Default-568h@2x.png in Resources */,
-				F48417EB16D9CE8B00074EAE /* CBMasterViewController_iPhone.xib in Resources */,
-				F48417EE16D9CE8B00074EAE /* CBMasterViewController_iPad.xib in Resources */,
-				F48417F416D9CE8B00074EAE /* CBDetailViewController_iPad.xib in Resources */,
-				F484182616DA03F100074EAE /* CBDetailViewController_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,10 +293,16 @@
 				F48417D516D9CE8B00074EAE /* main.m in Sources */,
 				F48417D916D9CE8B00074EAE /* CBAppDelegate.m in Sources */,
 				F48417E216D9CE8B00074EAE /* CommunityBoard.xcdatamodeld in Sources */,
-				F48417E516D9CE8B00074EAE /* CBMasterViewController.m in Sources */,
-				F48417E816D9CE8B00074EAE /* CBDetailViewController.m in Sources */,
+				F48417E516D9CE8B00074EAE /* CBCommunityViewController.m in Sources */,
+				F48417E816D9CE8B00074EAE /* CBPostViewController.m in Sources */,
 				F484181D16D9D89E00074EAE /* CBHTTPClient.m in Sources */,
 				F484182416D9ED4D00074EAE /* CBIncrementalStore.m in Sources */,
+				F48C53B416E20D2D00A5A7D9 /* CBCreatePostViewController.m in Sources */,
+				F420CA7116E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m in Sources */,
+				F420CA7616E33059008878A6 /* Community.m in Sources */,
+				F420CA7916E33059008878A6 /* Post.m in Sources */,
+				F420CA7C16E33059008878A6 /* User.m in Sources */,
+				F4E0178616EC55E30001EFB0 /* CBLoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,30 +315,6 @@
 				F48417D216D9CE8B00074EAE /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		F48417E916D9CE8B00074EAE /* CBMasterViewController_iPhone.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F48417EA16D9CE8B00074EAE /* en */,
-			);
-			name = CBMasterViewController_iPhone.xib;
-			sourceTree = "<group>";
-		};
-		F48417EC16D9CE8B00074EAE /* CBMasterViewController_iPad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F48417ED16D9CE8B00074EAE /* en */,
-			);
-			name = CBMasterViewController_iPad.xib;
-			sourceTree = "<group>";
-		};
-		F48417F216D9CE8B00074EAE /* CBDetailViewController_iPad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F48417F316D9CE8B00074EAE /* en */,
-			);
-			name = CBDetailViewController_iPad.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

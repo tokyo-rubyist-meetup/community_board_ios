@@ -8,9 +8,13 @@
 
 #import "CBAppDelegate.h"
 
-#import "CBMasterViewController.h"
-#import "CBDetailViewController.h"
+#import "CBCommunityViewController.h"
+#import "CBLoginViewController.h"
+#import "CBPostViewController.h"
 #import "CBIncrementalStore.h"
+
+#import "AFHTTPRequestOperationLogger.h"
+#import "CBHTTPClient.h"
 
 @implementation CBAppDelegate
 
@@ -20,37 +24,45 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  
+  [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+  [[AFHTTPRequestOperationLogger sharedLogger] setLevel:AFLoggerLevelDebug];
+  
+  UIViewController *rootViewController = nil;
+  AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:@"token"];
  
-  if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-    CBMasterViewController *masterViewController = [[CBMasterViewController alloc]
-      initWithNibName:@"CBMasterViewController_iPhone" bundle:nil];
-    self.navigationController = [[UINavigationController alloc]
-      initWithRootViewController:masterViewController];
-    self.window.rootViewController = self.navigationController;
-    masterViewController.managedObjectContext = self.managedObjectContext;
+  if (!credential) {
+    rootViewController = [[CBLoginViewController alloc] initWithNibName:nil bundle:nil];
+  } else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+    [[CBHTTPClient sharedClient] setAuthorizationHeaderWithCredential:credential];
+    rootViewController = [[CBCommunityViewController alloc]
+      initWithManagedObjectContext:self.managedObjectContext];
   } else {
-    CBMasterViewController *masterViewController = [[CBMasterViewController alloc]
-      initWithNibName:@"CBMasterViewController_iPad" bundle:nil];
-    UINavigationController *masterNavigationController = [[UINavigationController alloc]
-      initWithRootViewController:masterViewController];
-      
-    CBDetailViewController *detailViewController = [[CBDetailViewController alloc]
-      initWithNibName:@"CBDetailViewController_iPad" bundle:nil];
-    UINavigationController *detailNavigationController = [[UINavigationController alloc]
-      initWithRootViewController:detailViewController];
-  	
-  	masterViewController.detailViewController = detailViewController;
-      
-    self.splitViewController = [[UISplitViewController alloc] init];
-    self.splitViewController.delegate = detailViewController;
-    self.splitViewController.viewControllers = @[masterNavigationController, detailNavigationController];
-      
-    self.window.rootViewController = self.splitViewController;
-  
-    masterViewController.managedObjectContext = self.managedObjectContext;
-    detailViewController.managedObjectContext = self.managedObjectContext;
+//    CBCommunityViewController *masterViewController = [[CBCommunityViewController alloc]
+//      initWithNibName:nil bundle:nil];
+//    UINavigationController *masterNavigationController = [[UINavigationController alloc]
+//      initWithRootViewController:masterViewController];
+//    
+//    CBPostViewController *detailViewController = [[CBPostViewController alloc]
+//      initWithCommunity:[masterViewController.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]]
+//      managedObjectContext:self.managedObjectContext];
+//    UINavigationController *detailNavigationController = [[UINavigationController alloc]
+//      initWithRootViewController:detailViewController];
+//  	
+//  	masterViewController.postViewController = detailViewController;
+//      
+//    self.splitViewController = [[UISplitViewController alloc] init];
+//    self.splitViewController.delegate = detailViewController;
+//    self.splitViewController.viewControllers = @[masterNavigationController, detailNavigationController];
+//      
+//    self.window.rootViewController = self.splitViewController;
+//  
+//    masterViewController.managedObjectContext = self.managedObjectContext;
+//    detailViewController.managedObjectContext = self.managedObjectContext;
   }
-  
+  self.navigationController = [[UINavigationController alloc]
+    initWithRootViewController:rootViewController];
+  self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
   
   return YES;

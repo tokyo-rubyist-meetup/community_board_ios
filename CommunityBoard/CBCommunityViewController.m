@@ -1,25 +1,27 @@
 //
-//  CBMasterViewController.m
+//  CBCommunityViewController.m
 //  CommunityBoard
 //
 //  Created by Matt on 2/24/13.
 //  Copyright (c) 2013 Matthew Gillingham. All rights reserved.
 //
 
-#import "CBMasterViewController.h"
-#import "CBDetailViewController.h"
+#import "CBCommunityViewController.h"
+#import "CBPostViewController.h"
 
-@interface CBMasterViewController ()
+@interface CBCommunityViewController ()
+@property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
 
-@implementation CBMasterViewController
+@implementation CBCommunityViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext {
+  self = [super initWithNibName:nil bundle:nil];
   
   if (self) {
     self.title = NSLocalizedString(@"Community", @"Community");
+    self.managedObjectContext = managedObjectContext;
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
       self.clearsSelectionOnViewWillAppear = NO;
       self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
@@ -99,15 +101,14 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+  Community *community = (Community*)[[self fetchedResultsController] objectAtIndexPath:indexPath];
   
   if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-    if (!self.detailViewController) {
-      self.detailViewController = [[CBDetailViewController alloc] initWithNibName:@"CBDetailViewController_iPhone" bundle:nil];
-    }
-    
-    self.detailViewController.managedObjectContext = self.managedObjectContext;
-    [self.navigationController pushViewController:self.detailViewController animated:YES];
+    CBPostViewController *postViewController = [[CBPostViewController alloc]
+      initWithCommunity:community
+      managedObjectContext:self.managedObjectContext];
+        
+    [self.navigationController pushViewController:postViewController animated:YES];
   }
 }
 
