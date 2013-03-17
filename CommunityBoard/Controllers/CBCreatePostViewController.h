@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Community.h"
+#import <RestKit/RestKit.h>
+#import "CBCommunity.h"
 
 @interface CBCreatePostViewController : UIViewController
 
-- (id)initWithCommunity:(Community*)community managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+- (id)initWithCommunity:(CBCommunity*)community managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @property (strong, nonatomic) UITextView *textView;
 @property (strong, nonatomic) UIButton *submitButton;

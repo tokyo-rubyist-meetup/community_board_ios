@@ -8,6 +8,7 @@
 
 #import "CBCommunityViewController.h"
 #import "CBPostViewController.h"
+#import "RKObjectManager.h"
 
 @interface CBCommunityViewController ()
 @property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -20,7 +21,7 @@
   self = [super initWithNibName:nil bundle:nil];
   
   if (self) {
-    self.title = NSLocalizedString(@"Community", @"Community");
+    self.title = NSLocalizedString(@"Community Board", @"Community Board");
     self.managedObjectContext = managedObjectContext;
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
       self.clearsSelectionOnViewWillAppear = NO;
@@ -42,7 +43,9 @@
     sectionNameKeyPath:nil
     cacheName:nil];
   self.fetchedResultsController.delegate = self;
-  [self.fetchedResultsController performFetch:nil];  
+  [self.fetchedResultsController performFetch:nil];
+  
+  [self loadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,7 +104,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  Community *community = (Community*)[[self fetchedResultsController] objectAtIndexPath:indexPath];
+  CBCommunity *community = (CBCommunity*)[[self fetchedResultsController] objectAtIndexPath:indexPath];
   
   if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
     CBPostViewController *postViewController = [[CBPostViewController alloc]
@@ -201,8 +204,20 @@
  */
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-  NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  cell.textLabel.text = [[object valueForKey:@"name"] description];
+  CBCommunity *community = (CBCommunity*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+  cell.textLabel.text = community.name;
+  cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f];
+}
+
+- (void)loadData {
+  [[RKObjectManager sharedManager]
+    getObjectsAtPathForRouteNamed:@"communities"
+    object:nil
+    parameters:nil
+    success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    }
+    failure:^(RKObjectRequestOperation *operation, NSError *error) {
+    }];
 }
 
 @end

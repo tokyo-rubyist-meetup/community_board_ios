@@ -9,56 +9,59 @@
 #import "CBPostViewController.h"
 #import "CBCreatePostViewController.h"
 #import "UIImageView+AFNetworking.h"
-#import "AFIncrementalStore.h"
+#import "CBPost.h"
+#import "CBUser.h"
 
 @interface CBPostViewController ()
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
-@property (strong, nonatomic) id postsUpdatedObserver;
 @property (strong, nonatomic) NSArray *posts;
 @property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (strong, nonatomic, readonly) Community *community;
+@property (weak, nonatomic, readwrite) CBCommunity *community;
 @end
 
 @implementation CBPostViewController
 
 #pragma mark - Managing the detail item
 
-- (id)initWithCommunity:(Community*)community managedObjectContext:(NSManagedObjectContext*)managedObjectContext {
+- (id)initWithCommunity:(CBCommunity*)community managedObjectContext:(NSManagedObjectContext*)managedObjectContext {
   self = [super initWithNibName:nil bundle:nil];
   
   if (self) {
-    self.title = NSLocalizedString(@"Posts", @"Posts");
-    _community = community;
+    self.title = community.name;
+    self.community = community;
     self.managedObjectContext = managedObjectContext;
     [self loadPosts];
     
+    // I did not use UIBarButtonSystemItemAdd because it doesn't reflect the appearance proxy changes
     UIBarButtonItem *newPostItem = [[UIBarButtonItem alloc]
-      initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+      initWithTitle:NSLocalizedString(@"+", @"An add button")
+      style:UIBarButtonItemStylePlain
       target:self
       action:@selector(addButtonPressed:)];
     self.navigationItem.rightBarButtonItems = @[newPostItem];
-    
-    self.postsUpdatedObserver = [[NSNotificationCenter defaultCenter]
-      addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
-      object:nil
-      queue:nil
-      usingBlock:^(NSNotification *notification){
-        [self loadPosts];
-        [self.tableView reloadData];
-      }];
   }
   
   return self;
 }
 
-- (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self.postsUpdatedObserver];
-  self.postsUpdatedObserver = nil;
-}
-
 - (void)loadPosts {
   NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
   self.posts = [self.community.posts sortedArrayUsingDescriptors:@[sortDescriptor]];
+  
+  [[RKObjectManager sharedManager]
+    getObjectsAtPathForRelationship:@"posts"
+    ofObject:self.community
+    parameters:nil
+    success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+      self.community.posts = [NSSet setWithArray:[mappingResult.dictionary valueForKey:@"posts"]];
+      
+      NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
+      self.posts = [self.community.posts sortedArrayUsingDescriptors:@[sortDescriptor]];
+      [self.tableView reloadData];
+      [self.managedObjectContext save:nil];
+  } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+  }];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -70,13 +73,29 @@
   CBCreatePostViewController *createPostViewController = [[CBCreatePostViewController alloc]
     initWithCommunity:self.community
     managedObjectContext:self.managedObjectContext];
-  [self presentViewController:createPostViewController animated:YES completion:nil];
+  UINavigationController *createPostNavigationController = [[UINavigationController alloc]
+    initWithRootViewController:createPostViewController];
+  [self presentViewController:createPostNavigationController animated:YES completion:nil];
 }
 
 #pragma mark - Table View
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   return [self.posts count];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  CBPost *post = [self.posts objectAtIndex:[indexPath row]];
+  
+  CGSize constraint = CGSizeMake(280.0 - (10.0f * 2), CGFLOAT_MAX);
+  CGSize size = [post.text
+    sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0f]
+    constrainedToSize:constraint
+    lineBreakMode:UILineBreakModeWordWrap];
+ 
+  CGFloat height = MAX(size.height, 44.0f);
+ 
+  return height + (10.0f * 2);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -98,10 +117,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-  NSManagedObject *object = [self.posts objectAtIndex:[indexPath row]];
+  CBPost *post = [self.posts objectAtIndex:[indexPath row]];
 
   if (editingStyle == UITableViewCellEditingStyleDelete) {
-    [self.managedObjectContext deleteObject:object];
+    [self.managedObjectContext deleteObject:post];
         
     NSError *error = nil;
     
@@ -118,11 +137,14 @@
 
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-  NSManagedObject *object = [self.posts objectAtIndex:[indexPath row]];
-  cell.textLabel.text = [[object valueForKey:@"text"] description];
+  CBPost *post = [self.posts objectAtIndex:[indexPath row]];
+  cell.textLabel.text = post.text;
+  cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13.0f];
+  cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+  cell.textLabel.numberOfLines = 0;
   
-  NSURL *url = [NSURL URLWithString:[object valueForKeyPath:@"user.iconURL"]];
-  [cell.imageView setImageWithURL:url];
+  NSURL *url = [NSURL URLWithString:post.user.avatarURL];
+  [cell.imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder"]];
 }
 
 #pragma mark - Split view

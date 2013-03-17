@@ -1,17 +1,17 @@
 //
-//  Post.m
+//  CBPost.m
 //  CommunityBoard
 //
-//  Created by Matt on 3/3/13.
+//  Created by Matt on 3/17/13.
 //  Copyright (c) 2013 Matthew Gillingham. All rights reserved.
 //
 
-#import "Post.h"
-#import "Community.h"
-#import "User.h"
+#import "CBPost.h"
+#import "CBCommunity.h"
+#import "CBUser.h"
 
 
-@implementation Post
+@implementation CBPost
 
 @dynamic createdAt;
 @dynamic postId;

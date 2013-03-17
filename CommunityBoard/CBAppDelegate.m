@@ -6,60 +6,161 @@
 //  Copyright (c) 2013 Matthew Gillingham. All rights reserved.
 //
 
+#import <RestKit/RestKit.h>
+#import <RestKit/CoreData.h>
+
 #import "CBAppDelegate.h"
 
 #import "CBCommunityViewController.h"
 #import "CBLoginViewController.h"
 #import "CBPostViewController.h"
-#import "CBIncrementalStore.h"
 
+#import "RKObjectManager.h"
 #import "AFHTTPRequestOperationLogger.h"
-#import "CBHTTPClient.h"
+#import "AFOAuth2Client.h"
+
+#import "CBCommunity.h"
+#import "CBPost.h"
+
+static NSString *baseURLString = @"https://community-board.herokuapp.com/api/v1/";
+static NSString *applicationID = @"677ccca1152c8824b823dedfa40c30f4cf4b11ad55687299d0c218f303e40f6e";
+static NSString *secret = @"814172c277147ad83e9725ad14bf2b30966672200ae2362108b47751f407ab8b";
+
+@interface CBAppDelegate ()
+
+@property (readwrite, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+
+@end
 
 @implementation CBAppDelegate
 
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize managedObjectModel = _managedObjectModel;
-@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+  [[UINavigationBar appearance] setTitleTextAttributes:@{
+    UITextAttributeFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f],
+    UITextAttributeTextColor: [UIColor darkGrayColor],
+    UITextAttributeTextShadowColor: [UIColor clearColor]
+  }];
+  [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
+  [[UIBarButtonItem appearance] setTitleTextAttributes:@{
+    UITextAttributeFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0f],
+    UITextAttributeTextColor: [UIColor darkGrayColor],
+    UITextAttributeTextShadowColor: [UIColor clearColor]
+  } forState:UIControlStateNormal];
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
-  [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
   [[AFHTTPRequestOperationLogger sharedLogger] setLevel:AFLoggerLevelDebug];
+  [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+
+  NSURL *baseURL = [NSURL URLWithString:baseURLString];
   
+  AFOAuth2Client *oauthClient = [AFOAuth2Client clientWithBaseURL:baseURL clientID:applicationID secret:secret];
+  AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:@"identifier"];
+  [oauthClient setParameterEncoding:AFJSONParameterEncoding];
+  
+  RKObjectManager *objectManager = [[RKObjectManager alloc] initWithHTTPClient:oauthClient];
+  RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc]
+    initWithManagedObjectModel:self.managedObjectModel];
+  objectManager.managedObjectStore = managedObjectStore;
+  
+  RKEntityMapping *communityMapping = [RKEntityMapping
+    mappingForEntityForName:@"Community"
+    inManagedObjectStore:managedObjectStore];
+  communityMapping.identificationAttributes = @[ @"communityId" ];
+  [communityMapping addAttributeMappingsFromDictionary:@{
+    @"id": @"communityId",
+    @"created_at": @"createdAt",
+    @"post_count": @"postCount"
+  }];
+  [communityMapping addAttributeMappingsFromArray:@[@"name"]];
+  
+  RKResponseDescriptor *communityResponseDescriptor = [RKResponseDescriptor
+    responseDescriptorWithMapping:communityMapping
+    pathPattern:@"communities.json"
+    keyPath:@"communities"
+    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+  [objectManager addResponseDescriptor:communityResponseDescriptor];
+  
+  RKEntityMapping *postResponseMapping = [RKEntityMapping
+    mappingForEntityForName:@"Post"
+    inManagedObjectStore:managedObjectStore];
+  postResponseMapping.identificationAttributes = @[ @"postId" ];
+  [postResponseMapping addAttributeMappingsFromDictionary:@{
+    @"id": @"postId",
+    @"created_at": @"createdAt",
+  }];
+  [postResponseMapping addAttributeMappingsFromArray:@[@"text"]];
+  
+  RKResponseDescriptor *postResponseDescriptor = [RKResponseDescriptor
+    responseDescriptorWithMapping:postResponseMapping
+    pathPattern:@"communities/:communityId/posts.json"
+    keyPath:@"posts"
+    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+  [objectManager addResponseDescriptor:postResponseDescriptor];
+  
+  RKObjectMapping *postRequestMapping = [RKObjectMapping requestMapping];
+  [postRequestMapping addAttributeMappingsFromArray:@[@"text"]];
+  
+  RKRequestDescriptor *postRequestDescriptor = [RKRequestDescriptor
+    requestDescriptorWithMapping:postRequestMapping
+    objectClass:[CBPost class]
+    rootKeyPath:@"post"];
+  [objectManager addRequestDescriptor:postRequestDescriptor];
+
+  RKEntityMapping *userMapping = [RKEntityMapping
+    mappingForEntityForName:@"User"
+    inManagedObjectStore:managedObjectStore];
+  userMapping.identificationAttributes = @[ @"userId" ];
+  [userMapping addAttributeMappingsFromDictionary:@{
+    @"id": @"userId",
+    @"avatar_url": @"avatarURL",
+  }];
+  [userMapping addAttributeMappingsFromArray:@[@"name"]];
+  [postResponseMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"user"
+    toKeyPath:@"user"
+    withMapping:userMapping]];
+
+  [objectManager.router.routeSet
+    addRoute:[RKRoute
+      routeWithName:@"communities"
+      pathPattern:@"communities.json"
+      method:RKRequestMethodGET]];
+  [objectManager.router.routeSet
+    addRoute:[RKRoute
+      routeWithRelationshipName:@"posts"
+      objectClass:[CBCommunity class]
+      pathPattern:@"communities/:communityId/posts.json"
+      method:RKRequestMethodGET]];
+  [objectManager.router.routeSet
+    addRoute:[RKRoute
+      routeWithClass:[CBPost class]
+      pathPattern:@"communities/:communityId/posts.json"
+      method:RKRequestMethodPOST]];
+
+  [managedObjectStore createPersistentStoreCoordinator];
+
+  NSString *storePath = [RKApplicationDataDirectory() stringByAppendingPathComponent:@"CommunityBoard.sqlite"];
+  NSError *error;
+  NSPersistentStore *persistentStore = [managedObjectStore
+    addSQLitePersistentStoreAtPath:storePath
+    fromSeedDatabaseAtPath:nil
+    withConfiguration:nil
+    options:nil
+    error:&error];
+  NSAssert(persistentStore, @"Failed to add persistent store with error: %@", error);  
+  
+  [managedObjectStore createManagedObjectContexts];
+ 
   UIViewController *rootViewController = nil;
-  AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:@"token"];
  
   if (!credential) {
     rootViewController = [[CBLoginViewController alloc] initWithNibName:nil bundle:nil];
-  } else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-    [[CBHTTPClient sharedClient] setAuthorizationHeaderWithCredential:credential];
-    rootViewController = [[CBCommunityViewController alloc]
-      initWithManagedObjectContext:self.managedObjectContext];
   } else {
-//    CBCommunityViewController *masterViewController = [[CBCommunityViewController alloc]
-//      initWithNibName:nil bundle:nil];
-//    UINavigationController *masterNavigationController = [[UINavigationController alloc]
-//      initWithRootViewController:masterViewController];
-//    
-//    CBPostViewController *detailViewController = [[CBPostViewController alloc]
-//      initWithCommunity:[masterViewController.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]]
-//      managedObjectContext:self.managedObjectContext];
-//    UINavigationController *detailNavigationController = [[UINavigationController alloc]
-//      initWithRootViewController:detailViewController];
-//  	
-//  	masterViewController.postViewController = detailViewController;
-//      
-//    self.splitViewController = [[UISplitViewController alloc] init];
-//    self.splitViewController.delegate = detailViewController;
-//    self.splitViewController.viewControllers = @[masterNavigationController, detailNavigationController];
-//      
-//    self.window.rootViewController = self.splitViewController;
-//  
-//    masterViewController.managedObjectContext = self.managedObjectContext;
-//    detailViewController.managedObjectContext = self.managedObjectContext;
+    [oauthClient setAuthorizationHeaderWithCredential:credential];
+    rootViewController = [[CBCommunityViewController alloc]
+      initWithManagedObjectContext:managedObjectStore.mainQueueManagedObjectContext];
   }
+  
   self.navigationController = [[UINavigationController alloc]
     initWithRootViewController:rootViewController];
   self.window.rootViewController = self.navigationController;
@@ -81,33 +182,6 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-  [self saveContext];
-}
-
-- (void)saveContext {
-  NSError *error = nil;
-  NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-  if (managedObjectContext) {
-    if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-      NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-      abort();
-    }
-  }
-}
-
-#pragma mark - Core Data stack
-- (NSManagedObjectContext *)managedObjectContext {
-  if (_managedObjectContext) {
-    return _managedObjectContext;
-  }
-    
-  NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-  if (coordinator) {
-    _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    [_managedObjectContext setPersistentStoreCoordinator:coordinator];
-  }
-  
-  return _managedObjectContext;
 }
 
 - (NSManagedObjectModel *)managedObjectModel {
@@ -116,44 +190,8 @@
   }
   
   NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"CommunityBoard" withExtension:@"momd"];
-  _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+  _managedObjectModel = [[[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL] mutableCopy];
   return _managedObjectModel;
-}
-
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-  if (_persistentStoreCoordinator) {
-    return _persistentStoreCoordinator;
-  }
-    
-  NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"CommunityBoard.sqlite"];
-    
-  NSError *error = nil;
-  _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
-    initWithManagedObjectModel:[self managedObjectModel]];
-  
-  AFIncrementalStore *incrementalStore = (AFIncrementalStore *)[_persistentStoreCoordinator
-    addPersistentStoreWithType:[CBIncrementalStore type]
-    configuration:nil
-    URL:nil
-    options:nil
-    error:nil];
-
-  NSDictionary *options = @{
-    NSInferMappingModelAutomaticallyOption : @(YES),
-    NSMigratePersistentStoresAutomaticallyOption: @(YES)
-  };
-  
-  if (![incrementalStore.backingPersistentStoreCoordinator
-   addPersistentStoreWithType:NSSQLiteStoreType
-   configuration:nil
-   URL:storeURL
-   options:options
-   error:&error]) {
-    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    abort();
-  }
-
-  return _persistentStoreCoordinator;
 }
 
 #pragma mark - Application's Documents directory

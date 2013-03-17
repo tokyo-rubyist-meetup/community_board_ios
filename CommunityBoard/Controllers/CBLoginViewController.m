@@ -8,12 +8,19 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "CBLoginViewController.h"
-#import "CBHTTPClient.h"
+#import "CBCommunityViewController.h"
 
 @interface CBLoginViewController ()
 @end
 
 @implementation CBLoginViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+  if (self = [super initWithNibName:nil bundle:nil]) {
+    self.title = NSLocalizedString(@"Login", "Login");
+  }
+  return self;
+}
 
 - (void)loadView {
   self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
@@ -25,8 +32,7 @@
     self.view.bounds.size.width - 20.0f,
     (self.view.bounds.size.width - 20.0f) * 0.125f
   )];
-  self.usernameTextField.layer.borderColor = [UIColor blackColor].CGColor;
-  self.usernameTextField.layer.borderWidth = 1.0f;
+  self.usernameTextField.borderStyle = UITextBorderStyleLine;
   [self.view addSubview:self.usernameTextField];
 
   self.passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(
@@ -35,8 +41,7 @@
     self.usernameTextField.bounds.size.width,
     self.usernameTextField.bounds.size.height
   )];
-  self.passwordTextField.layer.borderColor = [UIColor blackColor].CGColor;
-  self.passwordTextField.layer.borderWidth = 1.0f;
+  self.passwordTextField.borderStyle = UITextBorderStyleLine;
   [self.view addSubview:self.passwordTextField];
   
   self.submitButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -51,18 +56,25 @@
 }
 
 - (void)submitButtonPressed:(id)sender {
+  CBLoginViewController *__weak weakSelf = self;
+
   NSString *username = [self.usernameTextField.text copy];
   NSString *password = [self.passwordTextField.text copy];
 
-  [[CBHTTPClient sharedClient]
-    authenticateUsingOAuthWithPath:@"/oauth/token"
+  [(AFOAuth2Client*)[RKObjectManager sharedManager].HTTPClient authenticateUsingOAuthWithPath:@"/oauth/token"
     username:username
     password:password
     scope:nil
     success:^(AFOAuthCredential *credential){
-      [AFOAuthCredential storeCredential:credential withIdentifier:@"token"];
+      [AFOAuthCredential storeCredential:credential withIdentifier:@"identifier"];
+      
+      CBCommunityViewController *rootViewController = [[CBCommunityViewController alloc]
+        initWithManagedObjectContext:[[[RKObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext]];
+      [weakSelf.navigationController setViewControllers:@[rootViewController] animated:YES];
     }
-    failure:nil];
+    failure:^(NSError *error){
+      NSLog(@"Unable to authenticate: %@", [error localizedDescription]);
+    }];
 }
 
 @end

@@ -1,18 +1,18 @@
 //
-//  User.m
+//  CBUser.m
 //  CommunityBoard
 //
-//  Created by Matt on 3/3/13.
+//  Created by Matt on 3/17/13.
 //  Copyright (c) 2013 Matthew Gillingham. All rights reserved.
 //
 
-#import "User.h"
-#import "Post.h"
+#import "CBUser.h"
+#import "CBPost.h"
 
 
-@implementation User
+@implementation CBUser
 
-@dynamic iconURL;
+@dynamic avatarURL;
 @dynamic name;
 @dynamic userId;
 @dynamic posts;

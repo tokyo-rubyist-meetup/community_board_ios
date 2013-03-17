@@ -8,21 +8,28 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "CBCreatePostViewController.h"
-#import "Post.h"
+#import "CBPost.h"
 
 @interface CBCreatePostViewController ()
 @property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (strong, nonatomic) Community *community;
+@property (strong, nonatomic) CBCommunity *community;
 @end
 
 @implementation CBCreatePostViewController
 
-- (id)initWithCommunity:(Community*)community managedObjectContext:(NSManagedObjectContext *)managedObjectContext {
+- (id)initWithCommunity:(CBCommunity*)community managedObjectContext:(NSManagedObjectContext *)managedObjectContext {
   self = [super initWithNibName:nil bundle:nil];
 
   if (self) {
     self.managedObjectContext = managedObjectContext;
     self.community = community;
+    self.title = NSLocalizedString(@"Create Post", @"Create a new post");
+    
+    UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc]
+      initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+      target:self
+      action:@selector(cancelButtonPressed:)];
+    self.navigationItem.rightBarButtonItems = @[cancelButtonItem];
   }
   
   return self;
@@ -53,23 +60,35 @@
   [self.view addSubview:self.submitButton];
 }
 
+- (void)cancelButtonPressed:(id)sender {
+  [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)submitButtonPressed:(id)sender {    
   NSString *text = [self.textView.text copy];
   self.textView.text = nil;
   [self.textView resignFirstResponder];
     
   [self.managedObjectContext performBlock:^{
-    Post *post = [NSEntityDescription
+    CBPost *post = [NSEntityDescription
       insertNewObjectForEntityForName:@"Post"
       inManagedObjectContext:self.managedObjectContext];
     post.text = text;
     
     [self.community addPostsObject:post];
     
-    [self.managedObjectContext save:nil];
+    [[RKObjectManager sharedManager]
+      postObject:post
+      path:RKPathFromPatternWithObject(@"communities/:communityId/posts", self.community)
+      parameters:nil
+      success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self.managedObjectContext save:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
+      } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
   }];
   
-  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

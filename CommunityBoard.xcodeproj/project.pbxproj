@@ -10,9 +10,6 @@
 		4B5AA41D8D4E47A197DDEC6F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C5EA5474D5041C79E517171 /* libPods.a */; };
 		F420CA7116E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = F420CA7016E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m */; };
 		F420CA7316E324CA008878A6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F420CA7216E324CA008878A6 /* QuartzCore.framework */; };
-		F420CA7616E33059008878A6 /* Community.m in Sources */ = {isa = PBXBuildFile; fileRef = F420CA7516E33059008878A6 /* Community.m */; };
-		F420CA7916E33059008878A6 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = F420CA7816E33059008878A6 /* Post.m */; };
-		F420CA7C16E33059008878A6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = F420CA7B16E33059008878A6 /* User.m */; };
 		F48417C716D9CE8B00074EAE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417C616D9CE8B00074EAE /* UIKit.framework */; };
 		F48417C916D9CE8B00074EAE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417C816D9CE8B00074EAE /* Foundation.framework */; };
 		F48417CB16D9CE8B00074EAE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417CA16D9CE8B00074EAE /* CoreGraphics.framework */; };
@@ -24,12 +21,15 @@
 		F48417DD16D9CE8B00074EAE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F48417DC16D9CE8B00074EAE /* Default@2x.png */; };
 		F48417DF16D9CE8B00074EAE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F48417DE16D9CE8B00074EAE /* Default-568h@2x.png */; };
 		F48417E216D9CE8B00074EAE /* CommunityBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F48417E016D9CE8B00074EAE /* CommunityBoard.xcdatamodeld */; };
-		F48417E516D9CE8B00074EAE /* CBCommunityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48417E416D9CE8B00074EAE /* CBCommunityViewController.m */; };
-		F48417E816D9CE8B00074EAE /* CBPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48417E716D9CE8B00074EAE /* CBPostViewController.m */; };
-		F484181D16D9D89E00074EAE /* CBHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F484181C16D9D89E00074EAE /* CBHTTPClient.m */; };
-		F484182416D9ED4D00074EAE /* CBIncrementalStore.m in Sources */ = {isa = PBXBuildFile; fileRef = F484182316D9ED4D00074EAE /* CBIncrementalStore.m */; };
-		F48C53B416E20D2D00A5A7D9 /* CBCreatePostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48C53B316E20D2D00A5A7D9 /* CBCreatePostViewController.m */; };
-		F4E0178616EC55E30001EFB0 /* CBLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E0178516EC55E30001EFB0 /* CBLoginViewController.m */; };
+		F498491A16F5BF4C000736A6 /* CBCommunityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F498491316F5BF4C000736A6 /* CBCommunityViewController.m */; };
+		F498491B16F5BF4C000736A6 /* CBCreatePostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F498491516F5BF4C000736A6 /* CBCreatePostViewController.m */; };
+		F498491C16F5BF4C000736A6 /* CBLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F498491716F5BF4C000736A6 /* CBLoginViewController.m */; };
+		F498491D16F5BF4C000736A6 /* CBPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F498491916F5BF4C000736A6 /* CBPostViewController.m */; };
+		F498492816F5D142000736A6 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = F498492616F5D142000736A6 /* placeholder.png */; };
+		F498492916F5D142000736A6 /* placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F498492716F5D142000736A6 /* placeholder@2x.png */; };
+		F498492C16F5D57B000736A6 /* CBPost.m in Sources */ = {isa = PBXBuildFile; fileRef = F498492B16F5D57B000736A6 /* CBPost.m */; };
+		F498492F16F5D57C000736A6 /* CBUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F498492E16F5D57C000736A6 /* CBUser.m */; };
+		F498493216F5D57C000736A6 /* CBCommunity.m in Sources */ = {isa = PBXBuildFile; fileRef = F498493116F5D57C000736A6 /* CBCommunity.m */; };
 		F4E0178816EC6FA20001EFB0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4E0178716EC6FA20001EFB0 /* MobileCoreServices.framework */; };
 		F4E0178A16EC6FAD0001EFB0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4E0178916EC6FAD0001EFB0 /* Security.framework */; };
 /* End PBXBuildFile section */
@@ -40,12 +40,6 @@
 		F420CA6F16E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+CommunityBoardExtensions.h"; sourceTree = "<group>"; };
 		F420CA7016E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+CommunityBoardExtensions.m"; sourceTree = "<group>"; };
 		F420CA7216E324CA008878A6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		F420CA7416E33059008878A6 /* Community.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Community.h; sourceTree = "<group>"; };
-		F420CA7516E33059008878A6 /* Community.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Community.m; sourceTree = "<group>"; };
-		F420CA7716E33059008878A6 /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
-		F420CA7816E33059008878A6 /* Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Post.m; sourceTree = "<group>"; };
-		F420CA7A16E33059008878A6 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		F420CA7B16E33059008878A6 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		F48417C316D9CE8B00074EAE /* CommunityBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommunityBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48417C616D9CE8B00074EAE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F48417C816D9CE8B00074EAE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -61,18 +55,22 @@
 		F48417DC16D9CE8B00074EAE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		F48417DE16D9CE8B00074EAE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F48417E116D9CE8B00074EAE /* CommunityBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CommunityBoard.xcdatamodel; sourceTree = "<group>"; };
-		F48417E316D9CE8B00074EAE /* CBCommunityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBCommunityViewController.h; sourceTree = "<group>"; };
-		F48417E416D9CE8B00074EAE /* CBCommunityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CBCommunityViewController.m; sourceTree = "<group>"; };
-		F48417E616D9CE8B00074EAE /* CBPostViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBPostViewController.h; sourceTree = "<group>"; };
-		F48417E716D9CE8B00074EAE /* CBPostViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CBPostViewController.m; sourceTree = "<group>"; };
-		F484181B16D9D89E00074EAE /* CBHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBHTTPClient.h; sourceTree = "<group>"; };
-		F484181C16D9D89E00074EAE /* CBHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBHTTPClient.m; sourceTree = "<group>"; };
-		F484182216D9ED4D00074EAE /* CBIncrementalStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBIncrementalStore.h; sourceTree = "<group>"; };
-		F484182316D9ED4D00074EAE /* CBIncrementalStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBIncrementalStore.m; sourceTree = "<group>"; };
-		F48C53B216E20D2D00A5A7D9 /* CBCreatePostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCreatePostViewController.h; sourceTree = "<group>"; };
-		F48C53B316E20D2D00A5A7D9 /* CBCreatePostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCreatePostViewController.m; sourceTree = "<group>"; };
-		F4E0178416EC55E30001EFB0 /* CBLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBLoginViewController.h; sourceTree = "<group>"; };
-		F4E0178516EC55E30001EFB0 /* CBLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBLoginViewController.m; sourceTree = "<group>"; };
+		F498491216F5BF4C000736A6 /* CBCommunityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCommunityViewController.h; sourceTree = "<group>"; };
+		F498491316F5BF4C000736A6 /* CBCommunityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCommunityViewController.m; sourceTree = "<group>"; };
+		F498491416F5BF4C000736A6 /* CBCreatePostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCreatePostViewController.h; sourceTree = "<group>"; };
+		F498491516F5BF4C000736A6 /* CBCreatePostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCreatePostViewController.m; sourceTree = "<group>"; };
+		F498491616F5BF4C000736A6 /* CBLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBLoginViewController.h; sourceTree = "<group>"; };
+		F498491716F5BF4C000736A6 /* CBLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBLoginViewController.m; sourceTree = "<group>"; };
+		F498491816F5BF4C000736A6 /* CBPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBPostViewController.h; sourceTree = "<group>"; };
+		F498491916F5BF4C000736A6 /* CBPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBPostViewController.m; sourceTree = "<group>"; };
+		F498492616F5D142000736A6 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
+		F498492716F5D142000736A6 /* placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x.png"; sourceTree = "<group>"; };
+		F498492A16F5D57B000736A6 /* CBPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBPost.h; sourceTree = "<group>"; };
+		F498492B16F5D57B000736A6 /* CBPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBPost.m; sourceTree = "<group>"; };
+		F498492D16F5D57C000736A6 /* CBUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBUser.h; sourceTree = "<group>"; };
+		F498492E16F5D57C000736A6 /* CBUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBUser.m; sourceTree = "<group>"; };
+		F498493016F5D57C000736A6 /* CBCommunity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCommunity.h; sourceTree = "<group>"; };
+		F498493116F5D57C000736A6 /* CBCommunity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCommunity.m; sourceTree = "<group>"; };
 		F4E0178716EC6FA20001EFB0 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		F4E0178916EC6FAD0001EFB0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -141,21 +139,12 @@
 		F48417CE16D9CE8B00074EAE /* CommunityBoard */ = {
 			isa = PBXGroup;
 			children = (
-				F484181A16D9D87700074EAE /* API */,
+				F498491F16F5C43E000736A6 /* Views */,
 				F420CA6E16E31ABE008878A6 /* Category */,
-				F484182116D9ED4D00074EAE /* IncrementalStore */,
+				F498491116F5BF4C000736A6 /* Controllers */,
 				F484181016D9D71300074EAE /* Model */,
 				F48417D716D9CE8B00074EAE /* CBAppDelegate.h */,
 				F48417D816D9CE8B00074EAE /* CBAppDelegate.m */,
-				F48417E316D9CE8B00074EAE /* CBCommunityViewController.h */,
-				F48417E416D9CE8B00074EAE /* CBCommunityViewController.m */,
-				F48417E616D9CE8B00074EAE /* CBPostViewController.h */,
-				F48417E716D9CE8B00074EAE /* CBPostViewController.m */,
-				F48C53B216E20D2D00A5A7D9 /* CBCreatePostViewController.h */,
-				F48C53B316E20D2D00A5A7D9 /* CBCreatePostViewController.m */,
-				F4E0178416EC55E30001EFB0 /* CBLoginViewController.h */,
-				F4E0178516EC55E30001EFB0 /* CBLoginViewController.m */,
-				F48417E016D9CE8B00074EAE /* CommunityBoard.xcdatamodeld */,
 				F48417CF16D9CE8B00074EAE /* Supporting Files */,
 			);
 			path = CommunityBoard;
@@ -164,6 +153,8 @@
 		F48417CF16D9CE8B00074EAE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F498492616F5D142000736A6 /* placeholder.png */,
+				F498492716F5D142000736A6 /* placeholder@2x.png */,
 				F48417D016D9CE8B00074EAE /* CommunityBoard-Info.plist */,
 				F48417D116D9CE8B00074EAE /* InfoPlist.strings */,
 				F48417D416D9CE8B00074EAE /* main.m */,
@@ -178,32 +169,37 @@
 		F484181016D9D71300074EAE /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				F420CA7A16E33059008878A6 /* User.h */,
-				F420CA7B16E33059008878A6 /* User.m */,
-				F420CA7716E33059008878A6 /* Post.h */,
-				F420CA7816E33059008878A6 /* Post.m */,
-				F420CA7416E33059008878A6 /* Community.h */,
-				F420CA7516E33059008878A6 /* Community.m */,
+				F48417E016D9CE8B00074EAE /* CommunityBoard.xcdatamodeld */,
+				F498493016F5D57C000736A6 /* CBCommunity.h */,
+				F498493116F5D57C000736A6 /* CBCommunity.m */,
+				F498492D16F5D57C000736A6 /* CBUser.h */,
+				F498492E16F5D57C000736A6 /* CBUser.m */,
+				F498492A16F5D57B000736A6 /* CBPost.h */,
+				F498492B16F5D57B000736A6 /* CBPost.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
 		};
-		F484181A16D9D87700074EAE /* API */ = {
+		F498491116F5BF4C000736A6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F484181B16D9D89E00074EAE /* CBHTTPClient.h */,
-				F484181C16D9D89E00074EAE /* CBHTTPClient.m */,
+				F498491216F5BF4C000736A6 /* CBCommunityViewController.h */,
+				F498491316F5BF4C000736A6 /* CBCommunityViewController.m */,
+				F498491416F5BF4C000736A6 /* CBCreatePostViewController.h */,
+				F498491516F5BF4C000736A6 /* CBCreatePostViewController.m */,
+				F498491616F5BF4C000736A6 /* CBLoginViewController.h */,
+				F498491716F5BF4C000736A6 /* CBLoginViewController.m */,
+				F498491816F5BF4C000736A6 /* CBPostViewController.h */,
+				F498491916F5BF4C000736A6 /* CBPostViewController.m */,
 			);
-			path = API;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
-		F484182116D9ED4D00074EAE /* IncrementalStore */ = {
+		F498491F16F5C43E000736A6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F484182216D9ED4D00074EAE /* CBIncrementalStore.h */,
-				F484182316D9ED4D00074EAE /* CBIncrementalStore.m */,
 			);
-			path = IncrementalStore;
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,6 +259,8 @@
 				F48417DB16D9CE8B00074EAE /* Default.png in Resources */,
 				F48417DD16D9CE8B00074EAE /* Default@2x.png in Resources */,
 				F48417DF16D9CE8B00074EAE /* Default-568h@2x.png in Resources */,
+				F498492816F5D142000736A6 /* placeholder.png in Resources */,
+				F498492916F5D142000736A6 /* placeholder@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,16 +291,14 @@
 				F48417D516D9CE8B00074EAE /* main.m in Sources */,
 				F48417D916D9CE8B00074EAE /* CBAppDelegate.m in Sources */,
 				F48417E216D9CE8B00074EAE /* CommunityBoard.xcdatamodeld in Sources */,
-				F48417E516D9CE8B00074EAE /* CBCommunityViewController.m in Sources */,
-				F48417E816D9CE8B00074EAE /* CBPostViewController.m in Sources */,
-				F484181D16D9D89E00074EAE /* CBHTTPClient.m in Sources */,
-				F484182416D9ED4D00074EAE /* CBIncrementalStore.m in Sources */,
-				F48C53B416E20D2D00A5A7D9 /* CBCreatePostViewController.m in Sources */,
 				F420CA7116E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m in Sources */,
-				F420CA7616E33059008878A6 /* Community.m in Sources */,
-				F420CA7916E33059008878A6 /* Post.m in Sources */,
-				F420CA7C16E33059008878A6 /* User.m in Sources */,
-				F4E0178616EC55E30001EFB0 /* CBLoginViewController.m in Sources */,
+				F498491A16F5BF4C000736A6 /* CBCommunityViewController.m in Sources */,
+				F498491B16F5BF4C000736A6 /* CBCreatePostViewController.m in Sources */,
+				F498491C16F5BF4C000736A6 /* CBLoginViewController.m in Sources */,
+				F498491D16F5BF4C000736A6 /* CBPostViewController.m in Sources */,
+				F498492C16F5D57B000736A6 /* CBPost.m in Sources */,
+				F498492F16F5D57C000736A6 /* CBUser.m in Sources */,
+				F498493216F5D57C000736A6 /* CBCommunity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,7 +428,8 @@
 				F48417E116D9CE8B00074EAE /* CommunityBoard.xcdatamodel */,
 			);
 			currentVersion = F48417E116D9CE8B00074EAE /* CommunityBoard.xcdatamodel */;
-			path = CommunityBoard.xcdatamodeld;
+			name = CommunityBoard.xcdatamodeld;
+			path = ../CommunityBoard.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
