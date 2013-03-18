@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <RestKit/RestKit.h>
 #import "CBCommunity.h"
+#import "CBCreatePostViewController.h"
 
 @interface CBPostViewController : UITableViewController <UISplitViewControllerDelegate,
-  NSFetchedResultsControllerDelegate>
+  NSFetchedResultsControllerDelegate, CBCreatePostViewControllerDelegate>
 
 - (id)initWithCommunity:(CBCommunity*)community managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 

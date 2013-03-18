@@ -9,11 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <RestKit/RestKit.h>
 #import "AFOAuth2Client.h"
+#import "UIGlossyButton.h"
 
 @interface CBLoginViewController : UIViewController
 
+@property (strong, nonatomic) UILabel *usernameLabel;
 @property (strong, nonatomic) UITextField *usernameTextField;
+
+@property (strong, nonatomic) UILabel *passwordLabel;
 @property (strong, nonatomic) UITextField *passwordTextField;
-@property (strong, nonatomic) UIButton *submitButton;
+@property (strong, nonatomic) UIGlossyButton *submitButton;
 
 @end

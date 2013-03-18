@@ -6,9 +6,6 @@
 //  Copyright (c) 2013 Matthew Gillingham. All rights reserved.
 //
 
-#import <RestKit/RestKit.h>
-#import <RestKit/CoreData.h>
-
 #import "CBAppDelegate.h"
 
 #import "CBCommunityViewController.h"
@@ -17,140 +14,49 @@
 
 #import "RKObjectManager.h"
 #import "AFHTTPRequestOperationLogger.h"
-#import "AFOAuth2Client.h"
+
+#import "CBObjectManager.h"
 
 #import "CBCommunity.h"
 #import "CBPost.h"
 
-static NSString *baseURLString = @"https://community-board.herokuapp.com/api/v1/";
-static NSString *applicationID = @"677ccca1152c8824b823dedfa40c30f4cf4b11ad55687299d0c218f303e40f6e";
-static NSString *secret = @"814172c277147ad83e9725ad14bf2b30966672200ae2362108b47751f407ab8b";
+NSString * const CBCredentialIdentifier = @"CBCredentialIdentifier";
+NSString * const CBFontName = @"HelveticaNeue-Light";
+const CGFloat CBFontLargeSize = 17.0f;
+const CGFloat CBFontSmallSize = 13.0f;
+
+static NSString * const baseURLString = @"https://community-board.herokuapp.com/api/v1/";
+static NSString * const applicationID = @"677ccca1152c8824b823dedfa40c30f4cf4b11ad55687299d0c218f303e40f6e";
+static NSString * const secret = @"814172c277147ad83e9725ad14bf2b30966672200ae2362108b47751f407ab8b";
 
 @interface CBAppDelegate ()
 
 @property (readwrite, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (readwrite, strong, nonatomic) RKManagedObjectStore *managedObjectStore;
 
 @end
 
 @implementation CBAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-  [[UINavigationBar appearance] setTitleTextAttributes:@{
-    UITextAttributeFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f],
-    UITextAttributeTextColor: [UIColor darkGrayColor],
-    UITextAttributeTextShadowColor: [UIColor clearColor]
-  }];
-  [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
-  [[UIBarButtonItem appearance] setTitleTextAttributes:@{
-    UITextAttributeFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0f],
-    UITextAttributeTextColor: [UIColor darkGrayColor],
-    UITextAttributeTextShadowColor: [UIColor clearColor]
-  } forState:UIControlStateNormal];
+  [self setupAppearanceProxy];
+
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
   [[AFHTTPRequestOperationLogger sharedLogger] setLevel:AFLoggerLevelDebug];
   [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
-
-  NSURL *baseURL = [NSURL URLWithString:baseURLString];
+ 
+  AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:CBCredentialIdentifier];
   
+  NSURL *baseURL = [NSURL URLWithString:baseURLString];
+
   AFOAuth2Client *oauthClient = [AFOAuth2Client clientWithBaseURL:baseURL clientID:applicationID secret:secret];
-  AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:@"identifier"];
   [oauthClient setParameterEncoding:AFJSONParameterEncoding];
   
-  RKObjectManager *objectManager = [[RKObjectManager alloc] initWithHTTPClient:oauthClient];
-  RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc]
-    initWithManagedObjectModel:self.managedObjectModel];
-  objectManager.managedObjectStore = managedObjectStore;
+  CBObjectManager *objectManager = [[CBObjectManager alloc] initWithHTTPClient:oauthClient];
+  objectManager.managedObjectStore = self.managedObjectStore;
+  [objectManager setup];
   
-  RKEntityMapping *communityMapping = [RKEntityMapping
-    mappingForEntityForName:@"Community"
-    inManagedObjectStore:managedObjectStore];
-  communityMapping.identificationAttributes = @[ @"communityId" ];
-  [communityMapping addAttributeMappingsFromDictionary:@{
-    @"id": @"communityId",
-    @"created_at": @"createdAt",
-    @"post_count": @"postCount"
-  }];
-  [communityMapping addAttributeMappingsFromArray:@[@"name"]];
-  
-  RKResponseDescriptor *communityResponseDescriptor = [RKResponseDescriptor
-    responseDescriptorWithMapping:communityMapping
-    pathPattern:@"communities.json"
-    keyPath:@"communities"
-    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-  [objectManager addResponseDescriptor:communityResponseDescriptor];
-  
-  RKEntityMapping *postResponseMapping = [RKEntityMapping
-    mappingForEntityForName:@"Post"
-    inManagedObjectStore:managedObjectStore];
-  postResponseMapping.identificationAttributes = @[ @"postId" ];
-  [postResponseMapping addAttributeMappingsFromDictionary:@{
-    @"id": @"postId",
-    @"created_at": @"createdAt",
-  }];
-  [postResponseMapping addAttributeMappingsFromArray:@[@"text"]];
-  
-  RKResponseDescriptor *postResponseDescriptor = [RKResponseDescriptor
-    responseDescriptorWithMapping:postResponseMapping
-    pathPattern:@"communities/:communityId/posts.json"
-    keyPath:@"posts"
-    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-  [objectManager addResponseDescriptor:postResponseDescriptor];
-  
-  RKObjectMapping *postRequestMapping = [RKObjectMapping requestMapping];
-  [postRequestMapping addAttributeMappingsFromArray:@[@"text"]];
-  
-  RKRequestDescriptor *postRequestDescriptor = [RKRequestDescriptor
-    requestDescriptorWithMapping:postRequestMapping
-    objectClass:[CBPost class]
-    rootKeyPath:@"post"];
-  [objectManager addRequestDescriptor:postRequestDescriptor];
-
-  RKEntityMapping *userMapping = [RKEntityMapping
-    mappingForEntityForName:@"User"
-    inManagedObjectStore:managedObjectStore];
-  userMapping.identificationAttributes = @[ @"userId" ];
-  [userMapping addAttributeMappingsFromDictionary:@{
-    @"id": @"userId",
-    @"avatar_url": @"avatarURL",
-  }];
-  [userMapping addAttributeMappingsFromArray:@[@"name"]];
-  [postResponseMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"user"
-    toKeyPath:@"user"
-    withMapping:userMapping]];
-
-  [objectManager.router.routeSet
-    addRoute:[RKRoute
-      routeWithName:@"communities"
-      pathPattern:@"communities.json"
-      method:RKRequestMethodGET]];
-  [objectManager.router.routeSet
-    addRoute:[RKRoute
-      routeWithRelationshipName:@"posts"
-      objectClass:[CBCommunity class]
-      pathPattern:@"communities/:communityId/posts.json"
-      method:RKRequestMethodGET]];
-  [objectManager.router.routeSet
-    addRoute:[RKRoute
-      routeWithClass:[CBPost class]
-      pathPattern:@"communities/:communityId/posts.json"
-      method:RKRequestMethodPOST]];
-
-  [managedObjectStore createPersistentStoreCoordinator];
-
-  NSString *storePath = [RKApplicationDataDirectory() stringByAppendingPathComponent:@"CommunityBoard.sqlite"];
-  NSError *error;
-  NSPersistentStore *persistentStore = [managedObjectStore
-    addSQLitePersistentStoreAtPath:storePath
-    fromSeedDatabaseAtPath:nil
-    withConfiguration:nil
-    options:nil
-    error:&error];
-  NSAssert(persistentStore, @"Failed to add persistent store with error: %@", error);  
-  
-  [managedObjectStore createManagedObjectContexts];
- 
   UIViewController *rootViewController = nil;
  
   if (!credential) {
@@ -158,7 +64,7 @@ static NSString *secret = @"814172c277147ad83e9725ad14bf2b30966672200ae2362108b4
   } else {
     [oauthClient setAuthorizationHeaderWithCredential:credential];
     rootViewController = [[CBCommunityViewController alloc]
-      initWithManagedObjectContext:managedObjectStore.mainQueueManagedObjectContext];
+      initWithManagedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
   }
   
   self.navigationController = [[UINavigationController alloc]
@@ -184,6 +90,24 @@ static NSString *secret = @"814172c277147ad83e9725ad14bf2b30966672200ae2362108b4
 - (void)applicationWillTerminate:(UIApplication *)application {
 }
 
+#pragma mark - Private Methods
+- (void)setupAppearanceProxy {
+  // Community Board uses Twitter Bootstrap on the server, so a few simple changes will make the iOS App have a similar
+  // theme.
+  [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+  [[UINavigationBar appearance] setTitleTextAttributes:@{
+    UITextAttributeFont:[UIFont fontWithName:CBFontName size:CBFontLargeSize],
+    UITextAttributeTextColor: [UIColor darkGrayColor],
+    UITextAttributeTextShadowColor: [UIColor clearColor]
+  }];
+  [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
+  [[UIBarButtonItem appearance] setTitleTextAttributes:@{
+    UITextAttributeFont:[UIFont fontWithName:CBFontName size:CBFontSmallSize],
+    UITextAttributeTextColor: [UIColor darkGrayColor],
+    UITextAttributeTextShadowColor: [UIColor clearColor]
+  } forState:UIControlStateNormal];
+}
+
 - (NSManagedObjectModel *)managedObjectModel {
   if (_managedObjectModel) {
     return _managedObjectModel;
@@ -194,14 +118,28 @@ static NSString *secret = @"814172c277147ad83e9725ad14bf2b30966672200ae2362108b4
   return _managedObjectModel;
 }
 
-#pragma mark - Application's Documents directory
-
-- (NSURL *)applicationDocumentsDirectory {
-  NSArray *directories = [[NSFileManager defaultManager]
-    URLsForDirectory:NSDocumentDirectory
-    inDomains:NSUserDomainMask];
+- (RKManagedObjectStore*)managedObjectStore {
+  if (_managedObjectStore) {
+    return _managedObjectStore;
+  }
   
-  return [directories lastObject];
+  _managedObjectStore = [[RKManagedObjectStore alloc]
+    initWithManagedObjectModel:self.managedObjectModel];
+  [_managedObjectStore createPersistentStoreCoordinator];
+
+  NSString *storePath = [RKApplicationDataDirectory() stringByAppendingPathComponent:@"CommunityBoard.sqlite"];
+  NSError *error;
+  NSPersistentStore *persistentStore = [_managedObjectStore
+    addSQLitePersistentStoreAtPath:storePath
+    fromSeedDatabaseAtPath:nil
+    withConfiguration:nil
+    options:nil
+    error:&error];
+  NSAssert(persistentStore, @"Failed to add persistent store with error: %@", error);
+  
+  [_managedObjectStore createManagedObjectContexts];
+  
+  return _managedObjectStore;
 }
 
 @end

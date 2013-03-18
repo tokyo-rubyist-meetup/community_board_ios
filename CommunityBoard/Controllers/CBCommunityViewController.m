@@ -9,10 +9,12 @@
 #import "CBCommunityViewController.h"
 #import "CBPostViewController.h"
 #import "RKObjectManager.h"
+#import "CBAppDelegate.h"
 
 @interface CBCommunityViewController ()
+
 @property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 @implementation CBCommunityViewController
@@ -23,10 +25,6 @@
   if (self) {
     self.title = NSLocalizedString(@"Community Board", @"Community Board");
     self.managedObjectContext = managedObjectContext;
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-      self.clearsSelectionOnViewWillAppear = NO;
-      self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
-    }
   }
   return self;
 }
@@ -45,11 +43,7 @@
   self.fetchedResultsController.delegate = self;
   [self.fetchedResultsController performFetch:nil];
   
-  [self loadData];
-}
-
-- (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
+  [self loadCommunities];
 }
 
 #pragma mark - Table View
@@ -70,10 +64,6 @@
   
   if (cell == nil) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
   }
 
   [self configureCell:cell atIndexPath:indexPath];
@@ -81,38 +71,14 @@
   return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-  return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (editingStyle == UITableViewCellEditingStyleDelete) {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-        
-    NSError *error = nil;
-    
-    if (![context save:&error]) {
-      NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-      abort();
-    }
-  }   
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-  return NO;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   CBCommunity *community = (CBCommunity*)[[self fetchedResultsController] objectAtIndexPath:indexPath];
   
-  if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-    CBPostViewController *postViewController = [[CBPostViewController alloc]
-      initWithCommunity:community
-      managedObjectContext:self.managedObjectContext];
+  CBPostViewController *postViewController = [[CBPostViewController alloc]
+    initWithCommunity:community
+    managedObjectContext:self.managedObjectContext];
         
-    [self.navigationController pushViewController:postViewController animated:YES];
-  }
+  [self.navigationController pushViewController:postViewController animated:YES];
 }
 
 #pragma mark - Fetched results controller
@@ -124,7 +90,9 @@
   
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
   
-  NSEntityDescription *entity = [NSEntityDescription entityForName:@"Community" inManagedObjectContext:self.managedObjectContext];
+  NSEntityDescription *entity = [NSEntityDescription
+    entityForName:@"Community"
+    inManagedObjectContext:self.managedObjectContext];
   [fetchRequest setEntity:entity];
     
   [fetchRequest setFetchBatchSize:20];
@@ -134,14 +102,16 @@
     
   [fetchRequest setSortDescriptors:sortDescriptors];
   
-  NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
-  aFetchedResultsController.delegate = self;
-  self.fetchedResultsController = aFetchedResultsController;
+  _fetchedResultsController = [[NSFetchedResultsController alloc]
+    initWithFetchRequest:fetchRequest
+    managedObjectContext:self.managedObjectContext
+    sectionNameKeyPath:nil
+    cacheName:@"Master"];
+  _fetchedResultsController.delegate = self;
     
 	NSError *error = nil;
-	if (![self.fetchedResultsController performFetch:&error]) {
+	if (![_fetchedResultsController performFetch:&error]) {
     NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    abort();
 	}
     
   return _fetchedResultsController;
@@ -193,30 +163,27 @@
   [self.tableView endUpdates];
 }
 
-/*
-// Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
- 
- - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    // In the simplest, most efficient, case, reload the table view.
-    [self.tableView reloadData];
-}
- */
+#pragma mark - Private Methods
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
   CBCommunity *community = (CBCommunity*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+  cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
   cell.textLabel.text = community.name;
-  cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f];
+  cell.textLabel.font = [UIFont fontWithName:CBFontName size:CBFontLargeSize];
 }
 
-- (void)loadData {
+- (void)loadCommunities {
+  CBCommunityViewController *__weak weakSelf = self;
+
   [[RKObjectManager sharedManager]
     getObjectsAtPathForRouteNamed:@"communities"
     object:nil
     parameters:nil
     success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+      [weakSelf.tableView reloadData];
     }
     failure:^(RKObjectRequestOperation *operation, NSError *error) {
+      NSLog(@"Error loading communities: %@", error.localizedDescription);
     }];
 }
 

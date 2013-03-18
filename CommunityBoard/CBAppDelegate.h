@@ -7,17 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <RestKit/RestKit.h>
+
+extern NSString * const CBCredentialIdentifier;
+extern NSString * const CBFontName;
+extern const CGFloat CBFontLargeSize;
+extern const CGFloat CBFontSmallSize;
 
 @interface CBAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-
-- (NSURL *)applicationDocumentsDirectory;
-
+@property (readonly, strong, nonatomic) RKManagedObjectStore *managedObjectStore;
 @property (strong, nonatomic) UINavigationController *navigationController;
-
-@property (strong, nonatomic) UISplitViewController *splitViewController;
 
 @end

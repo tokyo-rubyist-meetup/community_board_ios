@@ -9,6 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CBCreatePostViewController.h"
 #import "CBPost.h"
+#import "CBAppDelegate.h"
 
 @interface CBCreatePostViewController ()
 @property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -47,48 +48,70 @@
   )];
   self.textView.layer.borderColor = [UIColor blackColor].CGColor;
   self.textView.layer.borderWidth = 1.0f;
+  self.textView.font = [UIFont fontWithName:CBFontName size:CBFontSmallSize];
   [self.view addSubview:self.textView];
   
-  self.submitButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-  self.submitButton.frame = CGRectMake(
+  self.submitButton = [[UIGlossyButton alloc] initWithFrame:CGRectMake(
     self.textView.frame.origin.x,
     self.textView.frame.origin.y + self.textView.frame.size.height + 10.0f,
     self.textView.bounds.size.width,
     44.0f
-  );
+  )];
   [self.submitButton addTarget:self action:@selector(submitButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+  self.submitButton.titleLabel.font = [UIFont fontWithName:CBFontName size:CBFontSmallSize];
+  [self.submitButton setGradientType:kUIGlossyButtonGradientTypeLinearGlossyStandard];
+  [self.submitButton setTitle:NSLocalizedString(@"Post", @"Post") forState:UIControlStateNormal];
+  [self.submitButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
   [self.view addSubview:self.submitButton];
 }
 
 - (void)cancelButtonPressed:(id)sender {
-  [self dismissViewControllerAnimated:YES completion:nil];
+  if ([self.delegate respondsToSelector:@selector(createPostViewControllerDidCancelPost:)]) {
+    [self.delegate createPostViewControllerDidCancelPost:self];
+  }
 }
 
-- (void)submitButtonPressed:(id)sender {    
+- (void)submitButtonPressed:(id)sender {
+  CBCreatePostViewController *__weak weakSelf = self;
+  
   NSString *text = [self.textView.text copy];
   self.textView.text = nil;
   [self.textView resignFirstResponder];
     
-  [self.managedObjectContext performBlock:^{
-    CBPost *post = [NSEntityDescription
-      insertNewObjectForEntityForName:@"Post"
-      inManagedObjectContext:self.managedObjectContext];
-    post.text = text;
+  CBPost *post = [NSEntityDescription
+    insertNewObjectForEntityForName:@"Post"
+    inManagedObjectContext:self.managedObjectContext];
+  post.text = text;
+        
+  [[RKObjectManager sharedManager]
+    postObject:post
+    path:RKPathFromPatternWithObject(@"communities/:communityId/posts.json", self.community)
+    parameters:nil
+    success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+      CBCreatePostViewController *strongSelf = weakSelf;
+      
+      if (!strongSelf) {
+        return;
+      }
     
-    [self.community addPostsObject:post];
-    
-    [[RKObjectManager sharedManager]
-      postObject:post
-      path:RKPathFromPatternWithObject(@"communities/:communityId/posts", self.community)
-      parameters:nil
-      success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self.managedObjectContext save:nil];
-        [self dismissViewControllerAnimated:YES completion:nil];
-      } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }];
+      [strongSelf.community addPostsObject:post];
+      [strongSelf.managedObjectContext saveToPersistentStore:nil];
+      
+      if ([strongSelf.delegate respondsToSelector:@selector(createPostViewControllerDidCreatePost:)]) {
+        [strongSelf.delegate createPostViewControllerDidCreatePost:strongSelf];
+      }
+    }
+    failure:^(RKObjectRequestOperation *operation, NSError *error) {
+      CBCreatePostViewController *strongSelf = weakSelf;
+      
+      if (!strongSelf) {
+        return;
+      }
+      
+      if ([strongSelf.delegate respondsToSelector:@selector(createPostViewController:postDidFailWithError:)]) {
+        [strongSelf.delegate createPostViewController:strongSelf postDidFailWithError:error];
+      }
   }];
-  
 }
 
 @end

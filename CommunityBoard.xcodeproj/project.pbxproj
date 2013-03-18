@@ -10,6 +10,8 @@
 		4B5AA41D8D4E47A197DDEC6F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C5EA5474D5041C79E517171 /* libPods.a */; };
 		F420CA7116E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = F420CA7016E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m */; };
 		F420CA7316E324CA008878A6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F420CA7216E324CA008878A6 /* QuartzCore.framework */; };
+		F44DB45F16F745EC00443121 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44DB45E16F745EC00443121 /* SystemConfiguration.framework */; };
+		F44DB46216F746F600443121 /* CBObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F44DB46116F746F600443121 /* CBObjectManager.m */; };
 		F48417C716D9CE8B00074EAE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417C616D9CE8B00074EAE /* UIKit.framework */; };
 		F48417C916D9CE8B00074EAE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417C816D9CE8B00074EAE /* Foundation.framework */; };
 		F48417CB16D9CE8B00074EAE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417CA16D9CE8B00074EAE /* CoreGraphics.framework */; };
@@ -40,6 +42,9 @@
 		F420CA6F16E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+CommunityBoardExtensions.h"; sourceTree = "<group>"; };
 		F420CA7016E31AFB008878A6 /* NSDateFormatter+CommunityBoardExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+CommunityBoardExtensions.m"; sourceTree = "<group>"; };
 		F420CA7216E324CA008878A6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F44DB45E16F745EC00443121 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		F44DB46016F746F600443121 /* CBObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBObjectManager.h; sourceTree = "<group>"; };
+		F44DB46116F746F600443121 /* CBObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBObjectManager.m; sourceTree = "<group>"; };
 		F48417C316D9CE8B00074EAE /* CommunityBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommunityBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48417C616D9CE8B00074EAE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F48417C816D9CE8B00074EAE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -80,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F44DB45F16F745EC00443121 /* SystemConfiguration.framework in Frameworks */,
 				F4E0178A16EC6FAD0001EFB0 /* Security.framework in Frameworks */,
 				F4E0178816EC6FA20001EFB0 /* MobileCoreServices.framework in Frameworks */,
 				F420CA7316E324CA008878A6 /* QuartzCore.framework in Frameworks */,
@@ -124,6 +130,7 @@
 		F48417C516D9CE8B00074EAE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F44DB45E16F745EC00443121 /* SystemConfiguration.framework */,
 				F4E0178916EC6FAD0001EFB0 /* Security.framework */,
 				F4E0178716EC6FA20001EFB0 /* MobileCoreServices.framework */,
 				F420CA7216E324CA008878A6 /* QuartzCore.framework */,
@@ -145,6 +152,8 @@
 				F484181016D9D71300074EAE /* Model */,
 				F48417D716D9CE8B00074EAE /* CBAppDelegate.h */,
 				F48417D816D9CE8B00074EAE /* CBAppDelegate.m */,
+				F44DB46016F746F600443121 /* CBObjectManager.h */,
+				F44DB46116F746F600443121 /* CBObjectManager.m */,
 				F48417CF16D9CE8B00074EAE /* Supporting Files */,
 			);
 			path = CommunityBoard;
@@ -299,6 +308,7 @@
 				F498492C16F5D57B000736A6 /* CBPost.m in Sources */,
 				F498492F16F5D57C000736A6 /* CBUser.m in Sources */,
 				F498493216F5D57C000736A6 /* CBCommunity.m in Sources */,
+				F44DB46216F746F600443121 /* CBObjectManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

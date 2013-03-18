@@ -11,6 +11,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "CBPost.h"
 #import "CBUser.h"
+#import "CBAppDelegate.h"
 
 @interface CBPostViewController ()
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
@@ -44,35 +45,20 @@
   return self;
 }
 
-- (void)loadPosts {
+- (void)viewDidLoad {
+  [super viewDidLoad];
+  
+  self.tableView.allowsSelection = NO;
+
   NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
   self.posts = [self.community.posts sortedArrayUsingDescriptors:@[sortDescriptor]];
-  
-  [[RKObjectManager sharedManager]
-    getObjectsAtPathForRelationship:@"posts"
-    ofObject:self.community
-    parameters:nil
-    success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-      self.community.posts = [NSSet setWithArray:[mappingResult.dictionary valueForKey:@"posts"]];
-      
-      NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
-      self.posts = [self.community.posts sortedArrayUsingDescriptors:@[sortDescriptor]];
-      [self.tableView reloadData];
-      [self.managedObjectContext save:nil];
-  } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-  }];
-
-}
-
-- (void)didReceiveMemoryWarning
-{
-  [super didReceiveMemoryWarning];
 }
 
 - (void)addButtonPressed:(id)sender {
   CBCreatePostViewController *createPostViewController = [[CBCreatePostViewController alloc]
     initWithCommunity:self.community
     managedObjectContext:self.managedObjectContext];
+  createPostViewController.delegate = self;
   UINavigationController *createPostNavigationController = [[UINavigationController alloc]
     initWithRootViewController:createPostViewController];
   [self presentViewController:createPostNavigationController animated:YES completion:nil];
@@ -89,7 +75,7 @@
   
   CGSize constraint = CGSizeMake(280.0 - (10.0f * 2), CGFLOAT_MAX);
   CGSize size = [post.text
-    sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0f]
+    sizeWithFont:[UIFont fontWithName:CBFontName size:CBFontSmallSize]
     constrainedToSize:constraint
     lineBreakMode:UILineBreakModeWordWrap];
  
@@ -112,34 +98,10 @@
   return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-  return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-  CBPost *post = [self.posts objectAtIndex:[indexPath row]];
-
-  if (editingStyle == UITableViewCellEditingStyleDelete) {
-    [self.managedObjectContext deleteObject:post];
-        
-    NSError *error = nil;
-    
-    if (![self.managedObjectContext save:&error]) {
-      NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-      abort();
-    }
-  }   
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-  return NO;
-}
-
-
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
   CBPost *post = [self.posts objectAtIndex:[indexPath row]];
   cell.textLabel.text = post.text;
-  cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13.0f];
+  cell.textLabel.font = [UIFont fontWithName:CBFontName size:CBFontSmallSize];
   cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
   cell.textLabel.numberOfLines = 0;
   
@@ -147,23 +109,47 @@
   [cell.imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder"]];
 }
 
-#pragma mark - Split view
-
-- (void)splitViewController:(UISplitViewController *)splitController
- willHideViewController:(UIViewController *)viewController
- withBarButtonItem:(UIBarButtonItem *)barButtonItem
- forPopoverController:(UIPopoverController *)popoverController {
-  barButtonItem.title = NSLocalizedString(@"Community", @"Community");
-  
-  [self.navigationItem setLeftBarButtonItems:@[barButtonItem] animated:YES];
-  self.masterPopoverController = popoverController;
+#pragma mark - CBCreatePostViewControllerDelegate
+- (void)createPostViewControllerDidCreatePost:(CBCreatePostViewController *)viewController {
+  [self dismissViewControllerAnimated:YES completion:^{
+    [self.tableView reloadData];
+    [self loadPosts];
+  }];
 }
 
-- (void)splitViewController:(UISplitViewController *)splitController
- willShowViewController:(UIViewController *)viewController
- invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
-  [self.navigationItem setLeftBarButtonItem:nil animated:YES];
-  self.masterPopoverController = nil;
+- (void)createPostViewControllerDidCancelPost:(CBCreatePostViewController *)viewController {
+  [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)createPostViewController:(CBCreatePostViewController *)viewController postDidFailWithError:(NSError *)error {
+  [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Private Methods
+- (void)loadPosts {
+  CBPostViewController *__weak weakSelf = self;
+  
+  [[RKObjectManager sharedManager]
+    getObjectsAtPathForRelationship:@"posts"
+    ofObject:self.community
+    parameters:nil
+    success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+      CBPostViewController *strongSelf = weakSelf;
+      
+      if (!strongSelf) {
+        return;
+      }
+    
+      strongSelf.community.posts = [NSSet setWithArray:[mappingResult.dictionary valueForKey:@"posts"]];
+      
+      NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
+      strongSelf.posts = [self.community.posts sortedArrayUsingDescriptors:@[sortDescriptor]];
+      
+      [strongSelf.tableView reloadData];
+      [strongSelf.managedObjectContext saveToPersistentStore:nil];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+      NSLog(@"Error loading posts: %@", error.localizedDescription);
+    }];
 }
 
 @end
