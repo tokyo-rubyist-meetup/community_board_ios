@@ -149,7 +149,7 @@
       [strongSelf.managedObjectContext saveToPersistentStore:&error];
       
       if (error) {
-        NSLog(@"Error loading posts: %@", error.localizedDescription);
+        NSLog(@"Error saving posts: %@", error.localizedDescription);
       }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
       NSLog(@"Error loading posts: %@", error.localizedDescription);
