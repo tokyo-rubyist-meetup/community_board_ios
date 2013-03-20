@@ -178,16 +178,6 @@
 }
 
 - (void)loadCommunities {
-  CBCommunityViewController *__weak weakSelf = self;
-
-  [[CBObjectManager sharedManager]
-    getObjectsAtPath:[CBAPI communitiesPath]
-    parameters:nil
-    success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-    }
-    failure:^(RKObjectRequestOperation *operation, NSError *error) {
-      NSLog(@"Error loading communities: %@", error.localizedDescription);
-    }];
 }
 
 @end
