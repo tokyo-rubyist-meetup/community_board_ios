@@ -31,9 +31,6 @@
 		F498491D16F5BF4C000736A6 /* CBPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F498491916F5BF4C000736A6 /* CBPostViewController.m */; };
 		F498492816F5D142000736A6 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = F498492616F5D142000736A6 /* placeholder.png */; };
 		F498492916F5D142000736A6 /* placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F498492716F5D142000736A6 /* placeholder@2x.png */; };
-		F498492C16F5D57B000736A6 /* CBPost.m in Sources */ = {isa = PBXBuildFile; fileRef = F498492B16F5D57B000736A6 /* CBPost.m */; };
-		F498492F16F5D57C000736A6 /* CBUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F498492E16F5D57C000736A6 /* CBUser.m */; };
-		F498493216F5D57C000736A6 /* CBCommunity.m in Sources */ = {isa = PBXBuildFile; fileRef = F498493116F5D57C000736A6 /* CBCommunity.m */; };
 		F4E0178816EC6FA20001EFB0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4E0178716EC6FA20001EFB0 /* MobileCoreServices.framework */; };
 		F4E0178A16EC6FAD0001EFB0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4E0178916EC6FAD0001EFB0 /* Security.framework */; };
 /* End PBXBuildFile section */
@@ -74,12 +71,6 @@
 		F498491916F5BF4C000736A6 /* CBPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBPostViewController.m; sourceTree = "<group>"; };
 		F498492616F5D142000736A6 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 		F498492716F5D142000736A6 /* placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x.png"; sourceTree = "<group>"; };
-		F498492A16F5D57B000736A6 /* CBPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBPost.h; sourceTree = "<group>"; };
-		F498492B16F5D57B000736A6 /* CBPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBPost.m; sourceTree = "<group>"; };
-		F498492D16F5D57C000736A6 /* CBUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBUser.h; sourceTree = "<group>"; };
-		F498492E16F5D57C000736A6 /* CBUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBUser.m; sourceTree = "<group>"; };
-		F498493016F5D57C000736A6 /* CBCommunity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCommunity.h; sourceTree = "<group>"; };
-		F498493116F5D57C000736A6 /* CBCommunity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCommunity.m; sourceTree = "<group>"; };
 		F4E0178716EC6FA20001EFB0 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		F4E0178916EC6FAD0001EFB0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -176,12 +167,6 @@
 			isa = PBXGroup;
 			children = (
 				F48417E016D9CE8B00074EAE /* CommunityBoard.xcdatamodeld */,
-				F498493016F5D57C000736A6 /* CBCommunity.h */,
-				F498493116F5D57C000736A6 /* CBCommunity.m */,
-				F498492D16F5D57C000736A6 /* CBUser.h */,
-				F498492E16F5D57C000736A6 /* CBUser.m */,
-				F498492A16F5D57B000736A6 /* CBPost.h */,
-				F498492B16F5D57B000736A6 /* CBPost.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -296,9 +281,6 @@
 				F498491B16F5BF4C000736A6 /* CBCreatePostViewController.m in Sources */,
 				F498491C16F5BF4C000736A6 /* CBLoginViewController.m in Sources */,
 				F498491D16F5BF4C000736A6 /* CBPostViewController.m in Sources */,
-				F498492C16F5D57B000736A6 /* CBPost.m in Sources */,
-				F498492F16F5D57C000736A6 /* CBUser.m in Sources */,
-				F498493216F5D57C000736A6 /* CBCommunity.m in Sources */,
 				F44DB46216F746F600443121 /* CBObjectManager.m in Sources */,
 				F46FC7A516F957B400C802C5 /* CBAPI.m in Sources */,
 			);
