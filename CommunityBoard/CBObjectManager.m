@@ -7,7 +7,6 @@
 //
 
 #import "CBObjectManager.h"
-#import "AFOAuth2Client.h"
 #import "CBCommunity.h"
 #import "CBPost.h"
 #import "CBAPI.h"
