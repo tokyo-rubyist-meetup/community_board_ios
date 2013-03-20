@@ -101,27 +101,6 @@
 }
 
 - (void)authenticateWithUsername:(NSString*)username password:(NSString*)password {
-  CBLoginViewController *__weak weakSelf = self;
-
-  [(AFOAuth2Client*)[RKObjectManager sharedManager].HTTPClient authenticateUsingOAuthWithPath:[CBAPI authenticationPath]
-    username:username
-    password:password
-    scope:nil
-    success:^(AFOAuthCredential *credential){
-      [AFOAuthCredential storeCredential:credential withIdentifier:CBCredentialIdentifier];
-      
-      CBCommunityViewController *rootViewController = [[CBCommunityViewController alloc]
-        initWithManagedObjectContext:[[[RKObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext]];
-      [weakSelf.navigationController setViewControllers:@[rootViewController] animated:YES];
-    }
-    failure:^(NSError *error){
-      [[[UIAlertView alloc]
-        initWithTitle:NSLocalizedString(@"Error", @"Error")
-        message:[error localizedDescription]
-        delegate:nil
-        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-        otherButtonTitles:nil, nil] show];
-    }];
 }
 
 #pragma mark - UITextFieldDelegate
