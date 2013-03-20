@@ -114,6 +114,8 @@
         return;
       }
       
+      [strongSelf.managedObjectContext deleteObject:post];
+      
       if ([strongSelf.delegate respondsToSelector:@selector(createPostViewController:postDidFailWithError:)]) {
         [strongSelf.delegate createPostViewController:strongSelf postDidFailWithError:error];
       }
