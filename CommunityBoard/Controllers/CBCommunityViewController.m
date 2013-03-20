@@ -178,8 +178,6 @@
 }
 
 - (void)loadCommunities {
-  CBCommunityViewController *__weak weakSelf = self;
-
   [[CBObjectManager sharedManager]
     getObjectsAtPath:[CBAPI communitiesPath]
     parameters:nil
