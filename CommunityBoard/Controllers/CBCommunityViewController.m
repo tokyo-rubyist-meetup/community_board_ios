@@ -184,7 +184,6 @@
     getObjectsAtPath:[CBAPI communitiesPath]
     parameters:nil
     success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-      [weakSelf.tableView reloadData];
     }
     failure:^(RKObjectRequestOperation *operation, NSError *error) {
       NSLog(@"Error loading communities: %@", error.localizedDescription);
