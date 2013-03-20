@@ -11,6 +11,7 @@
 		F420CA7316E324CA008878A6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F420CA7216E324CA008878A6 /* QuartzCore.framework */; };
 		F44DB45F16F745EC00443121 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44DB45E16F745EC00443121 /* SystemConfiguration.framework */; };
 		F44DB46216F746F600443121 /* CBObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F44DB46116F746F600443121 /* CBObjectManager.m */; };
+		F46FC7A516F957B400C802C5 /* CBAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = F46FC7A416F957B400C802C5 /* CBAPI.m */; };
 		F48417C716D9CE8B00074EAE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417C616D9CE8B00074EAE /* UIKit.framework */; };
 		F48417C916D9CE8B00074EAE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417C816D9CE8B00074EAE /* Foundation.framework */; };
 		F48417CB16D9CE8B00074EAE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F48417CA16D9CE8B00074EAE /* CoreGraphics.framework */; };
@@ -42,6 +43,8 @@
 		F44DB45E16F745EC00443121 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		F44DB46016F746F600443121 /* CBObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBObjectManager.h; sourceTree = "<group>"; };
 		F44DB46116F746F600443121 /* CBObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBObjectManager.m; sourceTree = "<group>"; };
+		F46FC7A316F957B400C802C5 /* CBAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBAPI.h; sourceTree = "<group>"; };
+		F46FC7A416F957B400C802C5 /* CBAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBAPI.m; sourceTree = "<group>"; };
 		F48417C316D9CE8B00074EAE /* CommunityBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommunityBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F48417C616D9CE8B00074EAE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F48417C816D9CE8B00074EAE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -140,6 +143,8 @@
 				F48417D816D9CE8B00074EAE /* CBAppDelegate.m */,
 				F44DB46016F746F600443121 /* CBObjectManager.h */,
 				F44DB46116F746F600443121 /* CBObjectManager.m */,
+				F46FC7A316F957B400C802C5 /* CBAPI.h */,
+				F46FC7A416F957B400C802C5 /* CBAPI.m */,
 				F48417CF16D9CE8B00074EAE /* Supporting Files */,
 			);
 			path = CommunityBoard;
@@ -287,6 +292,7 @@
 				F498492F16F5D57C000736A6 /* CBUser.m in Sources */,
 				F498493216F5D57C000736A6 /* CBCommunity.m in Sources */,
 				F44DB46216F746F600443121 /* CBObjectManager.m in Sources */,
+				F46FC7A516F957B400C802C5 /* CBAPI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

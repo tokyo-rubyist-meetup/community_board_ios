@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <RestKit/RestKit.h>
+#import <CoreData/CoreData.h>
 
 @class CBPostViewController;
-
-#import <CoreData/CoreData.h>
 
 @interface CBCommunityViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 

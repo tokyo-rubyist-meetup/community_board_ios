@@ -10,6 +10,7 @@
 #import "AFOAuth2Client.h"
 #import "CBCommunity.h"
 #import "CBPost.h"
+#import "CBAPI.h"
 
 @implementation CBObjectManager
 
@@ -53,7 +54,7 @@
   
   RKResponseDescriptor *communityResponseDescriptor = [RKResponseDescriptor
     responseDescriptorWithMapping:communityResponseMapping
-    pathPattern:@"communities.json"
+    pathPattern:[CBAPI communitiesPath]
     keyPath:@"communities"
     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
   [self addResponseDescriptor:communityResponseDescriptor];
@@ -66,34 +67,24 @@
 
   RKResponseDescriptor *postsResponseDescriptor = [RKResponseDescriptor
     responseDescriptorWithMapping:postsResponseMapping
-    pathPattern:@"communities/:communityId/posts.json"
+    pathPattern:[CBAPI postsPathPattern]
     keyPath:@"posts"
     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
   [self addResponseDescriptor:postsResponseDescriptor];
   
   RKResponseDescriptor *postResponseDescriptor = [RKResponseDescriptor
     responseDescriptorWithMapping:postsResponseMapping
-    pathPattern:@"communities/:communityId/posts.json"
+    pathPattern:[CBAPI postsPathPattern]
     keyPath:@"post"
     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
   [self addResponseDescriptor:postResponseDescriptor];
 
   [self.router.routeSet
     addRoute:[RKRoute
-      routeWithName:@"communities"
-      pathPattern:@"communities.json"
-      method:RKRequestMethodGET]];
-  [self.router.routeSet
-    addRoute:[RKRoute
       routeWithRelationshipName:@"posts"
       objectClass:[CBCommunity class]
-      pathPattern:@"communities/:communityId/posts.json"
+      pathPattern:[CBAPI postsPathPattern]
       method:RKRequestMethodGET]];
-  [self.router.routeSet
-    addRoute:[RKRoute
-      routeWithClass:[CBPost class]
-      pathPattern:@"communities/:communityId/posts.json"
-      method:RKRequestMethodPOST]];
 }
 
 @end

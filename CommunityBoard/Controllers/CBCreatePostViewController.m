@@ -10,6 +10,8 @@
 #import "CBCreatePostViewController.h"
 #import "CBPost.h"
 #import "CBAppDelegate.h"
+#import "CBObjectManager.h"
+#import "CBAPI.h"
 
 @interface CBCreatePostViewController ()
 @property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -83,9 +85,9 @@
     inManagedObjectContext:self.managedObjectContext];
   post.text = text;
         
-  [[RKObjectManager sharedManager]
+  [[CBObjectManager sharedManager]
     postObject:post
-    path:RKPathFromPatternWithObject(@"communities/:communityId/posts.json", self.community)
+    path:[CBAPI postPathWithCommunity:self.community]
     parameters:nil
     success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
       CBCreatePostViewController *strongSelf = weakSelf;

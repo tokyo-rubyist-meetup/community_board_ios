@@ -10,6 +10,7 @@
 #import "CBLoginViewController.h"
 #import "CBCommunityViewController.h"
 #import "CBAppDelegate.h"
+#import "CBAPI.h"
 #import "UIGlossyButton.h"
 
 @implementation CBLoginViewController
@@ -96,7 +97,7 @@
   NSString *username = [self.usernameTextField.text copy];
   NSString *password = [self.passwordTextField.text copy];
 
-  [(AFOAuth2Client*)[RKObjectManager sharedManager].HTTPClient authenticateUsingOAuthWithPath:@"/oauth/token"
+  [(AFOAuth2Client*)[RKObjectManager sharedManager].HTTPClient authenticateUsingOAuthWithPath:[CBAPI authenticationPath]
     username:username
     password:password
     scope:nil

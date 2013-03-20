@@ -139,13 +139,11 @@
       if (strongSelf == nil) {
         return;
       }
-    
-      strongSelf.community.posts = [NSSet setWithArray:[mappingResult.dictionary valueForKey:@"posts"]];
-      
-      NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
-      strongSelf.posts = [strongSelf.community.posts sortedArrayUsingDescriptors:@[sortDescriptor]];
-      
+          
+      strongSelf.posts = [mappingResult.dictionary objectForKey:@"posts"];
       [strongSelf.tableView reloadData];
+      
+      strongSelf.community.posts = [NSSet setWithArray:strongSelf.posts];
       [strongSelf.managedObjectContext saveToPersistentStore:nil];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
       NSLog(@"Error loading posts: %@", error.localizedDescription);

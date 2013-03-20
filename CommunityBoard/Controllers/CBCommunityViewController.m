@@ -8,7 +8,8 @@
 
 #import "CBCommunityViewController.h"
 #import "CBPostViewController.h"
-#import "RKObjectManager.h"
+#import "CBObjectManager.h"
+#import "CBAPI.h"
 #import "CBAppDelegate.h"
 
 @interface CBCommunityViewController ()
@@ -179,9 +180,8 @@
 - (void)loadCommunities {
   CBCommunityViewController *__weak weakSelf = self;
 
-  [[RKObjectManager sharedManager]
-    getObjectsAtPathForRouteNamed:@"communities"
-    object:nil
+  [[CBObjectManager sharedManager]
+    getObjectsAtPath:[CBAPI communitiesPath]
     parameters:nil
     success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
       [weakSelf.tableView reloadData];
