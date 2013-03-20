@@ -41,26 +41,11 @@ static NSString * const secret = @"";
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
  
   AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:CBCredentialIdentifier];
-  
-  NSURL *baseURL = [NSURL URLWithString:baseURLString];
 
-  AFOAuth2Client *oauthClient = [AFOAuth2Client clientWithBaseURL:baseURL clientID:applicationID secret:secret];
-  [oauthClient setParameterEncoding:AFJSONParameterEncoding];
-  
-  CBObjectManager *objectManager = [[CBObjectManager alloc] initWithHTTPClient:oauthClient];
-  objectManager.managedObjectStore = self.managedObjectStore;
-  [objectManager setup];
-  
   UIViewController *rootViewController = nil;
- 
-  if (!credential) {
-    rootViewController = [[CBLoginViewController alloc] initWithNibName:nil bundle:nil];
-  } else {
-    [oauthClient setAuthorizationHeaderWithCredential:credential];
-    rootViewController = [[CBCommunityViewController alloc]
-      initWithManagedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
-  }
   
+//***Create the AFOAuth2Client and CBObjectManager here.
+
   self.navigationController = [[UINavigationController alloc]
     initWithRootViewController:rootViewController];
   self.window.rootViewController = self.navigationController;
@@ -127,7 +112,7 @@ static NSString * const secret = @"";
 }
 
 - (RKManagedObjectStore*)managedObjectStore {
-  // Add the code to setup an RKManagedObjectStore
+//*** Add the code to setup an RKManagedObjectStore
   return nil;
 }
 

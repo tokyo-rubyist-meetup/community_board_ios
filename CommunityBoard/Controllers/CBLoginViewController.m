@@ -102,6 +102,7 @@
 }
 
 - (void)authenticateWithUsername:(NSString*)username password:(NSString*)password {
+//*** Obtain OAuth credential here.
 }
 
 #pragma mark - UITextFieldDelegate

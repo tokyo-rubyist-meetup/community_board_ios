@@ -82,44 +82,7 @@
 }
 
 - (void)createPostWithText:(NSString*)text {
-  CBCreatePostViewController *__weak weakSelf = self;
-  
-  CBPost *post = [NSEntityDescription
-    insertNewObjectForEntityForName:@"Post"
-    inManagedObjectContext:self.managedObjectContext];
-  post.text = text;
-        
-  [[CBObjectManager sharedManager]
-    postObject:post
-    path:[CBAPI postPathWithCommunity:self.community]
-    parameters:nil
-    success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-      CBCreatePostViewController *strongSelf = weakSelf;
-      
-      if (strongSelf == nil) {
-        return;
-      }
-    
-      [strongSelf.community addPostsObject:post];
-      [strongSelf.managedObjectContext saveToPersistentStore:nil];
-      
-      if ([strongSelf.delegate respondsToSelector:@selector(createPostViewControllerDidCreatePost:)]) {
-        [strongSelf.delegate createPostViewControllerDidCreatePost:strongSelf];
-      }
-    }
-    failure:^(RKObjectRequestOperation *operation, NSError *error) {
-      CBCreatePostViewController *strongSelf = weakSelf;
-      
-      if (strongSelf == nil) {
-        return;
-      }
-      
-      [strongSelf.managedObjectContext deleteObject:post];
-      
-      if ([strongSelf.delegate respondsToSelector:@selector(createPostViewController:postDidFailWithError:)]) {
-        [strongSelf.delegate createPostViewController:strongSelf postDidFailWithError:error];
-      }
-  }];
+//*** Create a post here.
 }
 
 @end

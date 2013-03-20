@@ -12,6 +12,7 @@
 @implementation CBObjectManager
 
 - (void)setup {
+//*** Setup the entity mappings, and the request and response descriptors here.
 }
 
 @end

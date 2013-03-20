@@ -178,6 +178,7 @@
 }
 
 - (void)loadCommunities {
+//*** Load the communities from the network here
 }
 
 @end

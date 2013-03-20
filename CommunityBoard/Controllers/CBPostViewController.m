@@ -129,6 +129,7 @@
 
 #pragma mark - Private Methods
 - (void)loadPosts {
+//*** Load the posts from the network here.
 }
 
 @end
