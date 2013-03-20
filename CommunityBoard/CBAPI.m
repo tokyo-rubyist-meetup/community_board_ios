@@ -12,7 +12,7 @@
 @implementation CBAPI
 
 + (NSString *)authenticationPath {
-  return @"/oauth/token";
+  return nil;
 }
 
 + (NSString*)communitiesPath {
