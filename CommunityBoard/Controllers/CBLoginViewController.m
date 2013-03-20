@@ -92,10 +92,16 @@
 }
 
 - (void)submitButtonPressed:(id)sender {
-  CBLoginViewController *__weak weakSelf = self;
-
   NSString *username = [self.usernameTextField.text copy];
   NSString *password = [self.passwordTextField.text copy];
+  
+  [self.view endEditing:YES];
+  
+  [self authenticateWithUsername:username password:password];
+}
+
+- (void)authenticateWithUsername:(NSString*)username password:(NSString*)password {
+  CBLoginViewController *__weak weakSelf = self;
 
   [(AFOAuth2Client*)[RKObjectManager sharedManager].HTTPClient authenticateUsingOAuthWithPath:[CBAPI authenticationPath]
     username:username

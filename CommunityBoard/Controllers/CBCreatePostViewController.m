@@ -74,12 +74,16 @@
 }
 
 - (void)submitButtonPressed:(id)sender {
-  CBCreatePostViewController *__weak weakSelf = self;
-  
   NSString *text = [self.textView.text copy];
   self.textView.text = nil;
   [self.textView resignFirstResponder];
-    
+  
+  [self createPostWithText:text];
+}
+
+- (void)createPostWithText:(NSString*)text {
+  CBCreatePostViewController *__weak weakSelf = self;
+  
   CBPost *post = [NSEntityDescription
     insertNewObjectForEntityForName:@"Post"
     inManagedObjectContext:self.managedObjectContext];
