@@ -11,6 +11,7 @@
 #import "CBCommunityViewController.h"
 #import "CBAppDelegate.h"
 #import "CBAPI.h"
+#import "CBObjectManager.h"
 #import "UIGlossyButton.h"
 
 @implementation CBLoginViewController
@@ -103,7 +104,7 @@
 - (void)authenticateWithUsername:(NSString*)username password:(NSString*)password {
   CBLoginViewController *__weak weakSelf = self;
 
-  [(AFOAuth2Client*)[RKObjectManager sharedManager].HTTPClient authenticateUsingOAuthWithPath:[CBAPI authenticationPath]
+  [(AFOAuth2Client*)[CBObjectManager sharedManager].HTTPClient authenticateUsingOAuthWithPath:[CBAPI authenticationPath]
     username:username
     password:password
     scope:nil
@@ -111,7 +112,7 @@
       [AFOAuthCredential storeCredential:credential withIdentifier:CBCredentialIdentifier];
     
       CBCommunityViewController *rootViewController = [[CBCommunityViewController alloc]
-        initWithManagedObjectContext:[[[RKObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext]];
+        initWithManagedObjectContext:[[[CBObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext]];
       [weakSelf.navigationController setViewControllers:@[rootViewController] animated:YES];
     }
     failure:^(NSError *error){

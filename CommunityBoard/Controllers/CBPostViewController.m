@@ -13,6 +13,7 @@
 #import "CBUser.h"
 #import "CBAppDelegate.h"
 #import "CBAPI.h"
+#import "CBObjectManager.h"
 
 @interface CBPostViewController ()
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
@@ -130,7 +131,7 @@
 - (void)loadPosts {
   CBPostViewController *__weak weakSelf = self;
   
-  [[RKObjectManager sharedManager]
+  [[CBObjectManager sharedManager]
     getObjectsAtPath:[CBAPI postPathWithCommunity:self.community]
     parameters:nil
     success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
