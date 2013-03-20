@@ -11,7 +11,7 @@
 #import "AFOAuth2Client.h"
 #import "UIGlossyButton.h"
 
-@interface CBLoginViewController : UIViewController
+@interface CBLoginViewController : UIViewController <UITextFieldDelegate>
 
 @property (strong, nonatomic) UILabel *usernameLabel;
 @property (strong, nonatomic) UITextField *usernameTextField;

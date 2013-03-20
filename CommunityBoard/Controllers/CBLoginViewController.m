@@ -44,6 +44,7 @@
   )];
   self.usernameTextField.font = [UIFont fontWithName:CBFontName size:CBFontLargeSize];
   self.usernameTextField.borderStyle = UITextBorderStyleLine;
+  self.usernameTextField.delegate = self;
   [self.view addSubview:self.usernameTextField];
 
   self.passwordLabel = [[UILabel alloc] initWithFrame:CGRectMake(
@@ -66,6 +67,7 @@
   self.passwordTextField.borderStyle = UITextBorderStyleLine;
   self.passwordTextField.font = [UIFont fontWithName:CBFontName size:CBFontLargeSize];
   self.passwordTextField.secureTextEntry = YES;
+  self.passwordTextField.delegate = self;
   [self.view addSubview:self.passwordTextField];
   
   self.submitButton = [(UIGlossyButton*)[UIGlossyButton alloc] initWithFrame:CGRectMake(
@@ -108,6 +110,17 @@
         cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
         otherButtonTitles:nil, nil] show];
     }];
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  [textField resignFirstResponder];
+
+  if (textField == self.usernameTextField) {
+    [self.passwordTextField becomeFirstResponder];
+  }
+  
+  return YES;
 }
 
 @end
