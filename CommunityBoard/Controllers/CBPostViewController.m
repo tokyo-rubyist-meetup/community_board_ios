@@ -136,14 +136,14 @@
     success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
       CBPostViewController *strongSelf = weakSelf;
       
-      if (!strongSelf) {
+      if (strongSelf == nil) {
         return;
       }
     
       strongSelf.community.posts = [NSSet setWithArray:[mappingResult.dictionary valueForKey:@"posts"]];
       
       NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
-      strongSelf.posts = [self.community.posts sortedArrayUsingDescriptors:@[sortDescriptor]];
+      strongSelf.posts = [strongSelf.community.posts sortedArrayUsingDescriptors:@[sortDescriptor]];
       
       [strongSelf.tableView reloadData];
       [strongSelf.managedObjectContext saveToPersistentStore:nil];

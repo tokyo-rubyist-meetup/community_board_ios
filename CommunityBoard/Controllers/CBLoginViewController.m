@@ -15,7 +15,9 @@
 @implementation CBLoginViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-  if (self = [super initWithNibName:nil bundle:nil]) {
+  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+  
+  if (self) {
     self.title = NSLocalizedString(@"Login", "Login");
   }
   return self;
@@ -76,7 +78,10 @@
     self.passwordTextField.bounds.size.width,
     44.0f
   )];
-  [self.submitButton addTarget:self action:@selector(submitButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+  [self.submitButton
+    addTarget:self
+    action:@selector(submitButtonPressed:)
+    forControlEvents:UIControlEventTouchUpInside];
   [self.submitButton setTitle:NSLocalizedString(@"Login", @"Login") forState:UIControlStateNormal];
   self.submitButton.titleLabel.font = [UIFont fontWithName:CBFontName size:CBFontSmallSize];
   [self.submitButton setGradientType:kUIGlossyButtonGradientTypeLinearGlossyStandard];

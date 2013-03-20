@@ -90,7 +90,7 @@
     success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
       CBCreatePostViewController *strongSelf = weakSelf;
       
-      if (!strongSelf) {
+      if (strongSelf == nil) {
         return;
       }
     
@@ -104,7 +104,7 @@
     failure:^(RKObjectRequestOperation *operation, NSError *error) {
       CBCreatePostViewController *strongSelf = weakSelf;
       
-      if (!strongSelf) {
+      if (strongSelf == nil) {
         return;
       }
       

@@ -15,7 +15,6 @@
 
 @property (strong, nonatomic) UILabel *usernameLabel;
 @property (strong, nonatomic) UITextField *usernameTextField;
-
 @property (strong, nonatomic) UILabel *passwordLabel;
 @property (strong, nonatomic) UITextField *passwordTextField;
 @property (strong, nonatomic) UIGlossyButton *submitButton;

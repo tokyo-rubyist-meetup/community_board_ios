@@ -11,10 +11,6 @@
 #import "CBCommunityViewController.h"
 #import "CBLoginViewController.h"
 #import "CBPostViewController.h"
-
-#import "RKObjectManager.h"
-#import "AFHTTPRequestOperationLogger.h"
-
 #import "CBObjectManager.h"
 
 #import "CBCommunity.h"
@@ -22,6 +18,7 @@
 
 NSString * const CBCredentialIdentifier = @"CBCredentialIdentifier";
 NSString * const CBFontName = @"HelveticaNeue-Light";
+
 const CGFloat CBFontLargeSize = 17.0f;
 const CGFloat CBFontSmallSize = 13.0f;
 
@@ -42,9 +39,6 @@ static NSString * const secret = @"814172c277147ad83e9725ad14bf2b30966672200ae23
   [self setupAppearanceProxy];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  
-  [[AFHTTPRequestOperationLogger sharedLogger] setLevel:AFLoggerLevelDebug];
-  [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
  
   AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:CBCredentialIdentifier];
   
@@ -79,6 +73,11 @@ static NSString * const secret = @"814172c277147ad83e9725ad14bf2b30966672200ae23
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+  NSError *error = nil;
+
+  [[[self managedObjectStore] mainQueueManagedObjectContext] saveToPersistentStore:&error];
+  
+  NSLog(@"%@", error.localizedDescription);
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -88,6 +87,11 @@ static NSString * const secret = @"814172c277147ad83e9725ad14bf2b30966672200ae23
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+  NSError *error = nil;
+
+  [[[self managedObjectStore] mainQueueManagedObjectContext] saveToPersistentStore:&error];
+  
+  NSLog(@"%@", error.localizedDescription);
 }
 
 #pragma mark - Private Methods
@@ -128,7 +132,7 @@ static NSString * const secret = @"814172c277147ad83e9725ad14bf2b30966672200ae23
   [_managedObjectStore createPersistentStoreCoordinator];
 
   NSString *storePath = [RKApplicationDataDirectory() stringByAppendingPathComponent:@"CommunityBoard.sqlite"];
-  NSError *error;
+  NSError *error = nil;
   NSPersistentStore *persistentStore = [_managedObjectStore
     addSQLitePersistentStoreAtPath:storePath
     fromSeedDatabaseAtPath:nil
