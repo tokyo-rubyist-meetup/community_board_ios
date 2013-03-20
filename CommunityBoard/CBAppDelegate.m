@@ -77,7 +77,9 @@ static NSString * const secret = @"814172c277147ad83e9725ad14bf2b30966672200ae23
 
   [[[self managedObjectStore] mainQueueManagedObjectContext] saveToPersistentStore:&error];
   
-  NSLog(@"%@", error.localizedDescription);
+  if (error) {
+    NSLog(@"%@", error.localizedDescription);
+  }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -91,7 +93,9 @@ static NSString * const secret = @"814172c277147ad83e9725ad14bf2b30966672200ae23
 
   [[[self managedObjectStore] mainQueueManagedObjectContext] saveToPersistentStore:&error];
   
-  NSLog(@"%@", error.localizedDescription);
+  if (error) {
+    NSLog(@"%@", error.localizedDescription);
+  }
 }
 
 #pragma mark - Private Methods

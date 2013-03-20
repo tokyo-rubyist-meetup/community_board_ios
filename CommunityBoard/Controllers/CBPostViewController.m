@@ -136,6 +136,7 @@
     parameters:nil
     success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
       CBPostViewController *strongSelf = weakSelf;
+      NSError *error = nil;
       
       if (strongSelf == nil) {
         return;
@@ -145,7 +146,11 @@
       [strongSelf.tableView reloadData];
       
       strongSelf.community.posts = [NSSet setWithArray:strongSelf.posts];
-      [strongSelf.managedObjectContext saveToPersistentStore:nil];
+      [strongSelf.managedObjectContext saveToPersistentStore:&error];
+      
+      if (error) {
+        NSLog(@"Error loading posts: %@", error.localizedDescription);
+      }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
       NSLog(@"Error loading posts: %@", error.localizedDescription);
     }];
