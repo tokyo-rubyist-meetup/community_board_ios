@@ -104,6 +104,8 @@ Next add the following lines, which will setup a new `AFOAuth2Client` and `CBObj
     CBObjectManager *objectManager = [[CBObjectManager alloc] initWithHTTPClient:oauthClient];
     objectManager.managedObjectStore = self.managedObjectStore;
     [objectManager setup];
+
+    AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:CBCredentialIdentifier];
     
     if (!credential) {
       rootViewController = [[CBLoginViewController alloc] initWithNibName:nil bundle:nil];

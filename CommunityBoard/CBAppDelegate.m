@@ -39,8 +39,6 @@ static NSString * const secret = @"";
   [self setupAppearanceProxy];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
- 
-  AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:CBCredentialIdentifier];
 
   UIViewController *rootViewController = nil;
   
