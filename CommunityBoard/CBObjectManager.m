@@ -78,13 +78,6 @@
     keyPath:@"post"
     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
   [self addResponseDescriptor:postResponseDescriptor];
-
-  [self.router.routeSet
-    addRoute:[RKRoute
-      routeWithRelationshipName:@"posts"
-      objectClass:[CBCommunity class]
-      pathPattern:[CBAPI postsPathPattern]
-      method:RKRequestMethodGET]];
 }
 
 @end

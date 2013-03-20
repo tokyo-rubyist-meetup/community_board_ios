@@ -12,6 +12,7 @@
 #import "CBPost.h"
 #import "CBUser.h"
 #import "CBAppDelegate.h"
+#import "CBAPI.h"
 
 @interface CBPostViewController ()
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
@@ -130,8 +131,7 @@
   CBPostViewController *__weak weakSelf = self;
   
   [[RKObjectManager sharedManager]
-    getObjectsAtPathForRelationship:@"posts"
-    ofObject:self.community
+    getObjectsAtPath:[CBAPI postPathWithCommunity:self.community]
     parameters:nil
     success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
       CBPostViewController *strongSelf = weakSelf;
