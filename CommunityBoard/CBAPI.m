@@ -16,15 +16,15 @@
 }
 
 + (NSString*)communitiesPath {
-  return @"communities.json";
+  return nil;
 }
 
 + (NSString*)postPathWithCommunity:(CBCommunity *)community {
-  return RKPathFromPatternWithObject([self postsPathPattern], community);
+  return nil;
 }
 
 + (NSString*)postsPathPattern {
-  return @"communities/:communityId/posts.json";
+  return nil;
 }
 
 
