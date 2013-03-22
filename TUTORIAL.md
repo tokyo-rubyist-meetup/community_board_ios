@@ -22,13 +22,13 @@ This is the name of the community, so it should be a String.
 
 	- communityId
 
-This is the identifier for the community.  Since ‘id’ is a reserved word in Objective C, we give it the name “communityId” instead.  Identifiers in this project are integers, so this should be an Integer type.
+This is the identifier for the community.  Since ‘id’ is a reserved word in Objective C, we give it the name “communityId” instead.  Identifiers in this project are integers, so this should be an Integer 32 type.
 
-On the right-hand side, you might want to check the box to make this value “indexed,” which will improve the speed with which Core Data can access this value.
+On the right-hand side, you might want to check the box to make this value “indexed,” which will improve the speed with which Core Data can access this value by making this value one of the indexed values in the persistent store.
 
 	- postCount
 
-This is the number of posts that are currently listed under that community.  It should also be an Integer.
+This is the number of posts that are currently listed under that community.  It should also be an Integer 32.
 
 and one relationship
 
@@ -38,7 +38,7 @@ Make sure that the posts relationship is a to-many relationship because, for one
 
 ## Post
 
-The Post entity should three attributes:
+The Post entity should include three attributes:
 
 	- createdAt
 
@@ -50,7 +50,7 @@ This is the text for the post.  It should be a String.
 
 	- postId
 
-Similiar to communityId above.
+Similiar to communityId above, it should be an Integer 32.
 
 It will have two relationships.
 
@@ -75,11 +75,11 @@ This should also be a “to-many” relationship and should have an inverse rela
 
 ## Generating the NSManagedObject subclasses
 
-In XCode, you may also want to make sure that, under Entity in the Data Model inspector that the entity "Community" has a class name `CBCommunity`, "Post" is `CBPost` and "User" is `CBUser`.  (This is done by highlighting each Entity name and find the Data Model inspector which is usually on the right hand side of the screen).
+In XCode, you may also want to make sure that, under Entity in the Data Model inspector that the entity "Community" has a class name `CBCommunity`, "Post" is `CBPost` and "User" is `CBUser`.  (This is done by highlighting each Entity name and finding its information listing in the Data Model inspector which is usually on the right hand side of the screen).
 
-That way, after we generate the model code in the next step, they will have the same name as I use in the rest of the tutorial.  Otherwise, you will need to make sure to use class names that XCode uses. 
+That way, after we generate the model code in the next step, they will have the same name as I use in the rest of the tutorial.  Otherwise, you will have to change the code to match your class names. 
 
-Under “File > New > File > Core Data,” you can use the option to `NSManagedObject` subclass in order to generate class based on the data model information you have just created.  Add these classes to the “Model” folder.
+Under “File > New > File > Core Data,” you can use the option to `NSManagedObject` subclass in order to generate classes based on the data model information you have just created.  Add these classes to the “Model” folder.
 
 # Defining the API
 
@@ -91,11 +91,11 @@ You will want to fill in `baseURLString` using the base url for the API of your 
 
 Configuring OAuth requires having an application token and an application secret.  These need to be provided by the server to which you are connecting.
 
-Fortunately, RestKit uses the library AFNetworking under the hood.  AFNetworking has a class called AFHTTPClient which it uses to describe REST APIs and there is a subclass of AFHTTPClient called AFOAuth2Client which can handle all of the implementation details for us.  So implementing OAuth2 is as easy as creating an AFOAuth2Client, setting it as RestKit's HTTP client, and then calling the relevent methods. 
+Fortunately, RestKit uses the library AFNetworking under the hood.  AFNetworking has a class called AFHTTPClient which it uses to describe REST APIs and there is a subclass of AFHTTPClient called AFOAuth2Client which can handle all of the implementation details of OAuth 2 for us.  So implementing OAuth2 is as easy as creating an AFOAuth2Client, setting it as RestKit's HTTP client, and then calling the relevent methods. 
 
 In `CBAppDelegate.m`, fill in the `applicationID` and `secret` with the values which have been provided to you.
 
-Next add the following lines, which will setup a new `AFOAuth2Client` and `CBObjectManager` which uses that client as its http client.
+Next add the following lines, which will setup a new `AFOAuth2Client` and a `CBObjectManager` which uses that client as its HTTP client.
 
     NSURL *baseURL = [NSURL URLWithString:baseURLString];
     AFOAuth2Client *oauthClient = [AFOAuth2Client clientWithBaseURL:baseURL clientID:applicationID secret:secret];
@@ -116,7 +116,7 @@ Next add the following lines, which will setup a new `AFOAuth2Client` and `CBObj
 
 Next, in `CBAPI.m`, you will see a method called `+ (NSString*) authenticationPath`.  This method should return the path on the server to perform authentication (for example,
     
-    + (NSString*)communitiesPath {
+    + (NSString*)authenticationPath {
         return @"oauth/token";
     }
     
@@ -128,9 +128,9 @@ When the application starts up, it will run `application:didFinishLaunchingWithO
 
       AFOAuthCredential *credential = [AFOAuthCredential retrieveCredentialWithIdentifier:CBCredentialIdentifier];
 
-will check to see if there is an OAuth token already stored on this device.  If there is already a credential, it tells the `AFOAuth2Client` to sign all of our requests using those creditials automatically, so we can access the server apis from this point on without any problem.
+will check to see if there is an OAuth token already stored on this device.  If there is already a credential, it tells the `AFOAuth2Client` to sign all of our requests using those creditials automatically, so we can access the server apis from this point on without any authentication problems.
 
-If there is not a credential already, however, it will display a `CBLoginViewController` to use the user’s e-mail and password to obtain the credential.
+If there is not a credential already, however, it will display a `CBLoginViewController`, which will prompt the user for their username and password, which we can use to obtain the credential.
 
 Find the method called `- (void)authenticateWithUsername:password:` and add the following code inside of it:
 
@@ -160,9 +160,9 @@ The authentication is done with the method `authenticateUsingOAuthWithPath:usern
 
 ## API
 
-In order to access the API, we will need to fill in the remain of the endpoints in CBAPI.m.  Other than authentication, there are two other endpoints we will want to access, the endpoint to get communities and the endpoint to get posts or create a new post.
+In order to access the API, we will need to fill in the remain of the endpoints in CBAPI.m.  Other than authentication, there are two other endpoints we will want to access: the endpoint to get communities and the endpoint to get posts or create a new post.
 
-The communities endpoint is fairly straightforward.  We want should simply change it to return the endpoint which downloads all of the communities.
+The communities endpoint is fairly straightforward.  We simply go to the endpoint which downloads all of the communities.
     
     + (NSString*)communitiesPath {
           return @"communities.json";
@@ -254,14 +254,14 @@ In `addAttributeMappingsFromDictionary:` the key on the JSON object is matched w
 
 Because `name` is the same on both, we can use `addAttributeMappingsFromArray:` to add it without any mapping.
 
-Any fields in the JSON object which are not added to the mappings will be ignored.
+Any fields in the JSON object which are not added to the mappings by one of these methods will be ignored.
 
 #### Post
 
     RKObjectMapping *postRequestMapping = [RKObjectMapping requestMapping];
     [postRequestMapping addAttributeMappingsFromArray:@[@"text"]];
 
-This code will set up how a post object will be formatted when it is send as a POST *request*.  Essentially, only the `text` attribute is sent.  
+This code will set up how a post object will be formatted when it is send as a POST *request*.  Only the `text` attribute is sent.  
 
     RKEntityMapping *postsResponseMapping = [RKEntityMapping
       mappingForEntityForName:@"Post"
@@ -273,7 +273,7 @@ This code will set up how a post object will be formatted when it is send as a P
     }];
     [postsResponseMapping addAttributeMappingsFromArray:@[@"text"]];
 
-This code will set up how a post object will be mapped when it is received as a response.  It will work for a JSON object with the internal an internal structure like this:
+This code will set up how a post object will be mapped when it is received as a response.  It will work for a JSON object with an structure like this:
 
     {
         "id": …,
@@ -293,7 +293,7 @@ This code will set up how a post object will be mapped when it is received as a 
     }];
     [userResponseMapping addAttributeMappingsFromArray:@[@"name"]];
   
-This code shows to format a user as a response.  It will match a JSON object with the following structure:
+This code shows how to format a user as a response.  It will match a JSON object with the following structure:
 
     {
         "id": …,
@@ -305,13 +305,13 @@ This code shows to format a user as a response.  It will match a JSON object wit
       toKeyPath:@"user"
       withMapping:userResponseMapping]];
 
-Because the user is nested inside of a post response, this code tells RestKit to look for the "user" keypath inside of a post object in order to do the mapping.
+Because the user is nested inside of a post JSON object, we need to tell RestKit to look for the "user" keypath inside of a post object in order to do the mapping.
 
-In other words, when it receives a post JSON object, it will look for the following field
+In other words, when it receives a post JSON object, it will look for the following field inside of the object
 
     {
         ...
-        "user":{ … }
+        "user": { … }
     }
 
 and match those contents with a User Core Data entity.
@@ -345,7 +345,7 @@ Next, we create
       rootKeyPath:@"post"];
     [self addRequestDescriptor:postRequestDescriptor];
 
-This code maps the post request mapping to the post path in our API.  This is the API we use to create new posts
+This code maps the post request mapping to the post path in our API.  This is the API we use to create new posts:
 
     {
         "post": {
@@ -353,7 +353,7 @@ This code maps the post request mapping to the post path in our API.  This is th
         }
     }
 
-Now, we need to create *two* response descriptors for the post endpoint.  The reason is because we have two operations GET and POST for the same endpoint.  One fetches a list of posts and other receives a new post object as a response to the action of creating a new post.  The GET request will have a response like this:
+Now, we need to create *two* response descriptors for the post endpoint.  The reason is because we have two operations, GET and POST, for the same endpoint.  One fetches a *list* of posts and other receives a *single* new post object as a response to the action of creating a new post.  The GET request will have a response like this:
 
 {
 	"posts": [...]
@@ -455,7 +455,7 @@ Now all that remains is adding the code to make the various network requests.  T
 
 ## Loading Communities
 
-In the `CBCommunityViewController.h`, find the method named `- (void)loadCommunities` and add the following code.
+In the `CBCommunityViewController.h`, find the method named `- (void)loadCommunities` and add the following code:
 
     CBCommunityViewController *__weak weakSelf = self;
 
@@ -473,7 +473,7 @@ This instructs RestKit to load the objects at the given path.  Since we have alr
 
 ## Loading Posts
 
-In the `CBPostViewController.h`, find the method named `- (void)loadCommunities` and add the following code.
+In the `CBPostViewController.h`, find the method named `- (void)loadPosts` and add the following code.
 
     CBPostViewController *__weak weakSelf = self;
   
@@ -505,7 +505,7 @@ This code is almost exactly the same as the previous code.  In this case, we do,
 
 We also set the relationship between the community and posts here manually and store it.  RestKit actually maintains two managed objects contexts, one which runs in a private queue and one which runs in the main queue, which is a child context of the one running in a private queue.  In this app, we only interact with the managed object context in the main queue and use a convenience method provided by RestKit called `saveToPersistentStore:` which bubbles our changes up to its parent.  This action makes sure that the posts we just loaded are saved in the SQLite database.
 
-One important technical note which is important here:  The success block of this method is called on the main thread and the `self.managedObjectContext` is using `NSMainQueueConcurrencyType`, so it can be used in this manner.  Depending on the concurrency type of a managed object context and whether or not a block is guaranteed to be executed in a particular queue, similiar code might be problematic in other situations.  Please make sure you understand how to use Core Data in a multi-threaded settings such as loading from a network connection.
+One important technical note which is important here:  The success block of this method is called on the main thread and the `self.managedObjectContext` is using `NSMainQueueConcurrencyType`, so it can be used in this manner.  Depending on the concurrency type of a managed object context and whether or not a block is guaranteed to be executed in a particular queue, similiar code might be problematic in other situations.  Please make sure you understand how to use Core Data in multi-threaded settings.
 
 ## Create a New Post
 
@@ -553,3 +553,7 @@ Finally, in `CBCreatePostViewController.m`, find the method called `- (void)crea
 This code creates a new post object.  It tries to post the contents of this object.  RestKit will use the `RKRequestDescriptor` that we created previously to format the JSON for the post request.  If the request succeeds, we save the changes locally as well. If it fails, we delete the object locally.
 
 Finally, we call the view controller's delegate methods (which are implemented to dismiss the `CBCreatePostViewController`).
+
+# Conclusion
+
+So, at this point, try to build it and see what happens!
