@@ -1,6 +1,9 @@
 community_board_ios
 ===================
 
+See the companion slides at:
+http://www.slideshare.net/gillygize/connecting-to-a-rest-api-in-ios
+
 ## Install Dependencies
 
 ### Xcode 4.6.1
