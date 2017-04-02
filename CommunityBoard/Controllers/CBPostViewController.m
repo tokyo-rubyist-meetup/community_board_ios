@@ -79,7 +79,7 @@
   CGSize size = [post.text
     sizeWithFont:[UIFont fontWithName:CBFontName size:CBFontSmallSize]
     constrainedToSize:constraint
-    lineBreakMode:UILineBreakModeWordWrap];
+    lineBreakMode:NSLineBreakByWordWrapping];
  
   CGFloat height = MAX(size.height, 44.0f);
  
@@ -104,7 +104,7 @@
   CBPost *post = [self.posts objectAtIndex:[indexPath row]];
   cell.textLabel.text = post.text;
   cell.textLabel.font = [UIFont fontWithName:CBFontName size:CBFontSmallSize];
-  cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+  cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
   cell.textLabel.numberOfLines = 0;
   
   NSURL *url = [NSURL URLWithString:post.user.avatarURL];
